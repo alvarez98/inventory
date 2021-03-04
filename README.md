@@ -74,7 +74,7 @@ $ docker-compose up
 
 Create new models with:
 ```sh
-$ npm run db:model:generate --name {model-name} --atributes {column}:{data-type},{column}:{data-type}
+$ npm run db:model:generate --name {model-name} --attributes {column}:{data-type},{column}:{data-type}
 ```
 ## Built With :hammer_and_wrench:
 
