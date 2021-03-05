@@ -74,7 +74,9 @@ $ docker-compose up
 
 Create new models with:
 ```sh
-$ npm run db:model:generate --name {model-name} --attributes {column}:{data-type},{column}:{data-type}
+$ sequelize migration:create --name {model-name} --attributes {column}:{data-type},{column}:{data-type}
+
+$ sequelize migration:create --name add_id_constraint_user
 ```
 ## Built With :hammer_and_wrench:
 

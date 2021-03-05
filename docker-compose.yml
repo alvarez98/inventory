@@ -12,8 +12,10 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     command: >
-      sh -c "npm run db:migrate --env=development &&
-            npm run db:seed --env=development &&
+      sh -c "
+            npm i -g sequelize-cli
+            sequelize db:migrate --env=development &&
+            sequelize db:seed --env=development &&
             npm start"
     depends_on: 
       - db

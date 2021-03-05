@@ -2,7 +2,7 @@
 @baseURL = http://127.0.0.1:{{port}}/api
 
 ### GET /users
-GET {{baseURL}}/users/
+GET {{baseURL}}/users
 
 ### POST /users
 POST {{baseURL}}/users
