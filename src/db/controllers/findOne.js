@@ -1,3 +1,9 @@
 const Models = require('../models')
 
-module.exports = (model, filters) => Models[model].findOne({ where: filters })
+module.exports = (model, filters, excludes) =>
+  Models[model].findOne({
+    where: filters,
+    attributes: {
+      exclude: [...excludes, 'isActive'],
+    },
+  })

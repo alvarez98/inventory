@@ -1,9 +1,11 @@
 const HttpError = require('../classes/httpError')
 const add = require('../db/controllers/add')
 const find = require('../db/controllers/find')
-const findByPk = require('../db/controllers/findByPk')
+const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
+const { encrypt } = require('../utils/bcrypt')
+const generateID = require('../utils/generateID')
 
 /**
  * @function addUser
@@ -14,6 +16,8 @@ const models = require('../db/keys')
  */
 const addUser = async ({ body }, res, next) => {
   try {
+    body.id = generateID()
+    body.password = await encrypt(body.password)
     const user = await add(models.USER, body)
     res.status(201).json({ id: user.id, message: 'Created' })
   } catch (error) {
@@ -57,7 +61,7 @@ const getUsers = async ({ query }, res, next) => {
 
 const getOneUser = async ({ params }, res, next) => {
   try {
-    const user = await findByPk(models.USER, params.id)
+    const user = await findOne(models.USER, params, ['password'])
     if (!user) throw new HttpError(404, 'User not found')
     res.status(200).json({ data: user, message: 'Success' })
   } catch (error) {
@@ -75,6 +79,7 @@ const getOneUser = async ({ params }, res, next) => {
 
 const updateUser = async ({ params, body }, res, next) => {
   try {
+    if (body.password) body.password = await encrypt(body.password)
     await updateOne(models.USER, params.id, body)
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {

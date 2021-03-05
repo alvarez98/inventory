@@ -15,7 +15,7 @@ const updateUserSchm = Joi.object({
 })
 
 const getOneUserSchm = Joi.object({
-  id: Joi.string().required(),
+  id: Joi.string().uuid().required(),
 })
 
 const getUsersSchm = Joi.object({
