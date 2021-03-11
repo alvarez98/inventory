@@ -37,15 +37,14 @@ const getUsers = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const ntfcs = await find(
+    const users = await find(
       models.USER,
       filters,
-      ['password'],
       order,
       limit,
       offset,
     )
-    res.status(200).json({ data: ntfcs, count: ntfcs.length, offset })
+    res.status(200).json({ data: users, count: users.length, offset })
   } catch (error) {
     next(error)
   }
@@ -61,7 +60,7 @@ const getUsers = async ({ query }, res, next) => {
 
 const getOneUser = async ({ params }, res, next) => {
   try {
-    const user = await findOne(models.USER, params, ['password'])
+    const user = await findOne(models.USER, params)
     if (!user) throw new HttpError(404, 'User not found')
     res.status(200).json({ data: user, message: 'Success' })
   } catch (error) {

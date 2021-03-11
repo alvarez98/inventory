@@ -1,6 +1,7 @@
 @port = 5000
 @baseURL = http://127.0.0.1:{{port}}/api
 
+##################################### USERS #####################################
 ### GET /users
 GET {{baseURL}}/users
 
@@ -25,3 +26,31 @@ Content-Type: application/json
 
 ### DELETE /users/:id
 DELETE {{baseURL}}/users/536c9c21-f9e9-46be-a84f-4a8fb7b45cc2
+
+##################################### PROFILES #####################################
+### GET /profiles
+GET {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+
+### POST /profiles
+POST {{baseURL}}/profiles
+Content-Type: application/json
+
+{
+    "gender": "MALE",
+    "dni": "AAPA980929HYNLCD05",
+    "phone": "9991549015",
+    "birthday": "1998/09/29",
+    "address": "C94A #857 x139 y 141 Merida,Yucatan",
+    "user_id": "344d1182-074a-4f38-a2b0-46e5b4073cdc"
+}
+
+### PUT /profiles/:id
+PUT {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+Content-Type: application/json
+
+{
+    "phone": "9995549015"
+}
+
+### DELETE /profiles/:id
+DELETE {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
