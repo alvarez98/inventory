@@ -20,7 +20,6 @@ const getOneUserSchm = Joi.object({
 
 const getUsersSchm = Joi.object({
   email: Joi.string().email(),
-  password: Joi.string(),
   firstname: Joi.string(),
   lastname: Joi.string(),
   limit: Joi.number().integer(),

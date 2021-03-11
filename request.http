@@ -7,13 +7,14 @@ GET {{baseURL}}/users
 
 ### POST /users
 POST {{baseURL}}/users
+
 Content-Type: application/json
 
 {
-    "email": "otro@gmail.com",
+    "email": "lololol@gmail.com",
     "password": "aeap19980929",
-    "firstname": "Adolfo",
-    "lastname": "Alvarez"
+    "firstname": "cris",
+    "lastname": "Herrera"
 }
 
 ### PUT /users/:id

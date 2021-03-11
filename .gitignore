@@ -97,3 +97,7 @@ typings/
 .vscode-test
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# Ignore docker-compose2.yml
+
+docker-compose2.yml
