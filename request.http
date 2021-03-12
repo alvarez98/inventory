@@ -7,7 +7,6 @@ GET {{baseURL}}/users
 
 ### POST /users
 POST {{baseURL}}/users
-
 Content-Type: application/json
 
 {
@@ -30,7 +29,7 @@ DELETE {{baseURL}}/users/536c9c21-f9e9-46be-a84f-4a8fb7b45cc2
 
 ##################################### PROFILES #####################################
 ### GET /profiles
-GET {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+GET {{baseURL}}/profiles/85ba83d2-9b9f-4c15-8b88-fc752dbdb634
 
 ### POST /profiles
 POST {{baseURL}}/profiles
@@ -42,7 +41,7 @@ Content-Type: application/json
     "phone": "9991549015",
     "birthday": "1998/09/29",
     "address": "C94A #857 x139 y 141 Merida,Yucatan",
-    "user_id": "344d1182-074a-4f38-a2b0-46e5b4073cdc"
+    "user_id": "4d9521a8-4413-4f22-826c-ff22f2e6e0e0"
 }
 
 ### PUT /profiles/:id
@@ -55,3 +54,29 @@ Content-Type: application/json
 
 ### DELETE /profiles/:id
 DELETE {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+
+##################################### EXPENSES #####################################
+### GET /profiles
+GET {{baseURL}}/expenses
+
+### POST /expenses
+POST {{baseURL}}/expenses
+Content-Type: application/json
+
+{
+    "name": "Compra de lo que sea",
+    "description": "vasrvsd",
+    "date": "2021/03/01",
+    "total": "243425"
+}
+
+### PUT /expenses/:id
+PUT {{baseURL}}/expenses/1c70e39b-7cc2-4ca5-b49f-e6c176afd462
+Content-Type: application/json
+
+{
+    "description": "compre algo"
+}
+
+### DELETE /expenses/:id
+DELETE {{baseURL}}/expenses/1c70e39b-7cc2-4ca5-b49f-e6c176afd462

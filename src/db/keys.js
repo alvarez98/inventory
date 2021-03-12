@@ -1,4 +1,5 @@
 module.exports = {
     USER: 'User',
-    PROFILE: 'Profile'
+    PROFILE: 'Profile',
+    EXPENSE: 'Expense'
 }
