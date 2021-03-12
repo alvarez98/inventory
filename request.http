@@ -7,7 +7,6 @@ GET {{baseURL}}/users
 
 ### POST /users
 POST {{baseURL}}/users
-
 Content-Type: application/json
 
 {
