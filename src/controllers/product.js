@@ -7,70 +7,70 @@ const models = require('../db/keys')
 const generateID = require('../utils/generateID')
 
 /**
- * @function addExpense
- * @description Controller for POST /api/expenses
+ * @function addProduct
+ * @description Controller for POST /api/products
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addExpense = async ({ body }, res, next) => {
+const addProduct = async ({ body }, res, next) => {
   try {
     body.id = generateID()
-    const expense = await add(models.EXPENSE, body)
-    res.status(201).json({ id: expense.id, message: 'Created' })
+    const product = await add(models.PRODUCT, body)
+    res.status(201).json({ id: product.id, message: 'Created' })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function getExpenses
- * @description Controller for GET /api/expenses
+ * @function getProducts
+ * @description Controller for GET /api/products
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
 
-const getExpenses = async ({ query }, res, next) => {
+const getProducts = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const expenses = await find(models.EXPENSE, filters, order, limit, offset)
-    res.status(200).json({ data: expenses, count: expenses.length, offset })
+    const products = await find(models.PRODUCT, filters, order, limit, offset)
+    res.status(200).json({ data: products, count: products.length, offset })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function getOneExpense
- * @description Controller for GET /api/expenses/:id
+ * @function getOneProduct
+ * @description Controller for GET /api/products/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const getOneExpense = async ({ params }, res, next) => {
+const getOneProduct = async ({ params }, res, next) => {
   try {
-    const expense = await findOne(models.EXPENSE, params)
-    if (!expense) throw new HttpError(404, 'Expense not found')
-    res.status(200).json({ data: expense, message: 'Success' })
+    const product = await findOne(models.PRODUCT, params)
+    if (!product) throw new HttpError(404, 'Product not found')
+    res.status(200).json({ data: product, message: 'Success' })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function updateExpense
- * @description Controller for PUT /api/expenses/:id
+ * @function updateProduct
+ * @description Controller for PUT /api/products/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const updateExpense = async ({ params, body }, res, next) => {
+const updateProduct = async ({ params, body }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, body)
+    await updateOne(models.PRODUCT, params.id, body)
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {
     next(error)
@@ -78,16 +78,16 @@ const updateExpense = async ({ params, body }, res, next) => {
 }
 
 /**
- * @function deleteExpense
- * @description Controller for DELETE /api/expenses/:id
+ * @function deleteProduct
+ * @description Controller for DELETE /api/products/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const deleteExpense = async ({ params }, res, next) => {
+const deleteProduct = async ({ params }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, { isActive: false })
+    await updateOne(models.PRODUCT, params.id, { isActive: false })
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
     next(error)
@@ -95,9 +95,9 @@ const deleteExpense = async ({ params }, res, next) => {
 }
 
 module.exports = {
-  addExpense,
-  getExpenses,
-  getOneExpense,
-  updateExpense,
-  deleteExpense,
+  addProduct,
+  getProducts,
+  getOneProduct,
+  updateProduct,
+  deleteProduct,
 }

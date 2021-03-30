@@ -7,70 +7,70 @@ const models = require('../db/keys')
 const generateID = require('../utils/generateID')
 
 /**
- * @function addExpense
- * @description Controller for POST /api/expenses
+ * @function addSaleOrder
+ * @description Controller for POST /api/sale_orders
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addExpense = async ({ body }, res, next) => {
+const addSaleOrder = async ({ body }, res, next) => {
   try {
     body.id = generateID()
-    const expense = await add(models.EXPENSE, body)
-    res.status(201).json({ id: expense.id, message: 'Created' })
+    const sale_order = await add(models.SALEORDER, body)
+    res.status(201).json({ id: sale_order.id, message: 'Created' })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function getExpenses
- * @description Controller for GET /api/expenses
+ * @function getSaleOrders
+ * @description Controller for GET /api/sale_orders
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
 
-const getExpenses = async ({ query }, res, next) => {
+const getSaleOrders = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const expenses = await find(models.EXPENSE, filters, order, limit, offset)
-    res.status(200).json({ data: expenses, count: expenses.length, offset })
+    const sale_orders = await find(models.SALEORDER, filters, order, limit, offset)
+    res.status(200).json({ data: sale_orders, count: sale_orders.length, offset })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function getOneExpense
- * @description Controller for GET /api/expenses/:id
+ * @function getOneSaleOrder
+ * @description Controller for GET /api/sale_orders/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const getOneExpense = async ({ params }, res, next) => {
+const getOneSaleOrder = async ({ params }, res, next) => {
   try {
-    const expense = await findOne(models.EXPENSE, params)
-    if (!expense) throw new HttpError(404, 'Expense not found')
-    res.status(200).json({ data: expense, message: 'Success' })
+    const sale_order = await findOne(models.SALEORDER, params)
+    if (!sale_order) throw new HttpError(404, 'SaleOrder not found')
+    res.status(200).json({ data: sale_order, message: 'Success' })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function updateExpense
- * @description Controller for PUT /api/expenses/:id
+ * @function updateSaleOrder
+ * @description Controller for PUT /api/sale_orders/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const updateExpense = async ({ params, body }, res, next) => {
+const updateSaleOrder = async ({ params, body }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, body)
+    await updateOne(models.SALEORDER, params.id, body)
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {
     next(error)
@@ -78,16 +78,16 @@ const updateExpense = async ({ params, body }, res, next) => {
 }
 
 /**
- * @function deleteExpense
- * @description Controller for DELETE /api/expenses/:id
+ * @function deleteSaleOrder
+ * @description Controller for DELETE /api/sale_orders/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const deleteExpense = async ({ params }, res, next) => {
+const deleteSaleOrder = async ({ params }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, { isActive: false })
+    await updateOne(models.SALEORDER, params.id, { isActive: false })
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
     next(error)
@@ -95,9 +95,9 @@ const deleteExpense = async ({ params }, res, next) => {
 }
 
 module.exports = {
-  addExpense,
-  getExpenses,
-  getOneExpense,
-  updateExpense,
-  deleteExpense,
+  addSaleOrder,
+  getSaleOrders,
+  getOneSaleOrder,
+  updateSaleOrder,
+  deleteSaleOrder,
 }

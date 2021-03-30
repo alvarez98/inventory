@@ -7,70 +7,70 @@ const models = require('../db/keys')
 const generateID = require('../utils/generateID')
 
 /**
- * @function addExpense
- * @description Controller for POST /api/expenses
+ * @function addProvider
+ * @description Controller for POST /api/providers
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addExpense = async ({ body }, res, next) => {
+const addProvider = async ({ body }, res, next) => {
   try {
     body.id = generateID()
-    const expense = await add(models.EXPENSE, body)
-    res.status(201).json({ id: expense.id, message: 'Created' })
+    const provider = await add(models.PROVIDER, body)
+    res.status(201).json({ id: provider.id, message: 'Created' })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function getExpenses
- * @description Controller for GET /api/expenses
+ * @function getProviders
+ * @description Controller for GET /api/providers
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
 
-const getExpenses = async ({ query }, res, next) => {
+const getProviders = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const expenses = await find(models.EXPENSE, filters, order, limit, offset)
-    res.status(200).json({ data: expenses, count: expenses.length, offset })
+    const providers = await find(models.PROVIDER, filters, order, limit, offset)
+    res.status(200).json({ data: providers, count: providers.length, offset })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function getOneExpense
- * @description Controller for GET /api/expenses/:id
+ * @function getOneProvider
+ * @description Controller for GET /api/providers/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const getOneExpense = async ({ params }, res, next) => {
+const getOneProvider = async ({ params }, res, next) => {
   try {
-    const expense = await findOne(models.EXPENSE, params)
-    if (!expense) throw new HttpError(404, 'Expense not found')
-    res.status(200).json({ data: expense, message: 'Success' })
+    const provider = await findOne(models.PROVIDER, params)
+    if (!provider) throw new HttpError(404, 'Provider not found')
+    res.status(200).json({ data: provider, message: 'Success' })
   } catch (error) {
     next(error)
   }
 }
 
 /**
- * @function updateExpense
- * @description Controller for PUT /api/expenses/:id
+ * @function updateProvider
+ * @description Controller for PUT /api/providers/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const updateExpense = async ({ params, body }, res, next) => {
+const updateProvider = async ({ params, body }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, body)
+    await updateOne(models.PROVIDER, params.id, body)
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {
     next(error)
@@ -78,16 +78,16 @@ const updateExpense = async ({ params, body }, res, next) => {
 }
 
 /**
- * @function deleteExpense
- * @description Controller for DELETE /api/expenses/:id
+ * @function deleteProvider
+ * @description Controller for DELETE /api/providers/:id
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
 
-const deleteExpense = async ({ params }, res, next) => {
+const deleteProvider = async ({ params }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, { isActive: false })
+    await updateOne(models.PROVIDER, params.id, { isActive: false })
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
     next(error)
@@ -95,9 +95,9 @@ const deleteExpense = async ({ params }, res, next) => {
 }
 
 module.exports = {
-  addExpense,
-  getExpenses,
-  getOneExpense,
-  updateExpense,
-  deleteExpense,
+  addProvider,
+  getProviders,
+  getOneProvider,
+  updateProvider,
+  deleteProvider,
 }
