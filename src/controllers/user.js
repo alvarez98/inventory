@@ -1,5 +1,6 @@
 const HttpError = require('../classes/httpError')
 const add = require('../db/controllers/add')
+const { buildUserFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
@@ -39,12 +40,17 @@ const getUsers = async ({ query }, res, next) => {
     filters.isActive = true
     const users = await find(
       models.USER,
-      filters,
+      buildUserFilters(filters),
       order,
       limit,
-      offset,
+      offset
     )
-    res.status(200).json({ data: users, count: users.length, offset })
+    res.status(200).json({
+      data: users.rows,
+      count: users.count,
+      current: users.length,
+      offset,
+    })
   } catch (error) {
     next(error)
   }

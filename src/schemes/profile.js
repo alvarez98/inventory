@@ -37,7 +37,6 @@ const getOneProfileSchm = Joi.object({
 
 const getProfilesSchm = Joi.object({
   gender: Joi.string().valid('MALE', 'FEMALE'),
-  dni: Joi.string().min(18),
   birthday: Joi.array()
     .items(
       Joi.date().required(),

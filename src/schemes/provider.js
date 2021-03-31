@@ -39,9 +39,6 @@ const getProvidersSchm = Joi.object({
   country: Joi.string(),
   city: Joi.string(),
   state: Joi.string(),
-  phone: Joi.string()
-    .regex(/^[0-9]{10}$/)
-    .messages({ 'string.pattern.base': 'Invalid phone number.' }),
   email: Joi.string().email(),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),

@@ -37,7 +37,6 @@ const getProductsSchm = Joi.object({
     .length(2),
   code: Joi.number().integer(),
   description: Joi.string(),
-  expiration: Joi.date(),
   cost: Joi.array()
     .items(
       Joi.number().required(),

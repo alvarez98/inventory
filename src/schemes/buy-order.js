@@ -19,8 +19,12 @@ const getOneBuyOrderSchm = Joi.object({
 })
 
 const getBuyOrdersSchm = Joi.object({
-  providerId: Joi.string().uuid(),
-  totalBuy: Joi.number(),
+  totalBuy: Joi.array()
+  .items(
+    Joi.number().required(),
+    Joi.string().valid('equal', 'less', 'greater').required()
+  )
+  .length(2),
   date: Joi.array()
     .items(
       Joi.date().required(),

@@ -21,9 +21,12 @@ const getOneInventorySchm = Joi.object({
 })
 
 const getInventoriesSchm = Joi.object({
-  productId: Joi.string().uuid(),
-  buyId: Joi.string().uuid(),
-  quantity: Joi.number().integer(),
+  quantity: Joi.array()
+  .items(
+    Joi.number().integer().required(),
+    Joi.string().valid('equal', 'less', 'greater').required()
+  )
+  .length(2),
   expiration: Joi.array()
   .items(
     Joi.date().required(),

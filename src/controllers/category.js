@@ -1,5 +1,6 @@
 const HttpError = require('../classes/httpError')
 const add = require('../db/controllers/add')
+const { buildCategoryFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
@@ -35,8 +36,21 @@ const getCategories = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const categories = await find(models.CATEGORY, filters, order, limit, offset)
-    res.status(200).json({ data: categories, count: categories.length, offset })
+    const categories = await find(
+      models.CATEGORY,
+      buildCategoryFilters(filters),
+      order,
+      limit,
+      offset
+    )
+    res
+      .status(200)
+      .json({
+        data: categories.rows,
+        count: categories.count,
+        current: categories.length,
+        offset,
+      })
   } catch (error) {
     next(error)
   }

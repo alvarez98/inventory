@@ -1,5 +1,6 @@
 const HttpError = require('../classes/httpError')
 const add = require('../db/controllers/add')
+const { buildBuyFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
@@ -35,8 +36,21 @@ const getBuys = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const buys = await find(models.BUY, filters, order, limit, offset)
-    res.status(200).json({ data: buys, count: buys.length, offset })
+    const buys = await find(
+      models.BUY,
+      buildBuyFilters(filters),
+      order,
+      limit,
+      offset
+    )
+    res
+      .status(200)
+      .json({
+        data: buys.rows,
+        count: buys.count,
+        current: buys.length,
+        offset,
+      })
   } catch (error) {
     next(error)
   }

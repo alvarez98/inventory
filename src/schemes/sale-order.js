@@ -33,7 +33,7 @@ const getSaleOrdersSchm = Joi.object({
       Joi.string().valid('equal', 'less', 'greater').required()
     )
     .length(2),
-  status: Joi.string().enum(),
+  status: Joi.string().valid(),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),
   order: Joi.array()

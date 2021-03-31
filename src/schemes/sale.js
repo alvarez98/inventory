@@ -23,7 +23,12 @@ const getOneSaleSchm = Joi.object({
 })
 
 const getSalesSchm = Joi.object({
-  quantity: Joi.number().integer(),
+  quantity: Joi.array()
+    .items(
+      Joi.number().integer().required(),
+      Joi.string().valid('equal', 'less', 'greater').required()
+    )
+    .length(2),
   total: Joi.array()
     .items(
       Joi.number().required(),

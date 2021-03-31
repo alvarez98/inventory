@@ -21,13 +21,25 @@ const getOneExpenseSchm = Joi.object({
 const getExpensesSchm = Joi.object({
   name: Joi.string(),
   description: Joi.string(),
-  date: Joi.string(),
-  total: Joi.number(),
+  date: Joi.array()
+    .items(
+      Joi.date().required(),
+      Joi.string().valid('equal', 'less', 'greater').required()
+    )
+    .length(2),
+  total: Joi.array()
+    .items(
+      Joi.number().required(),
+      Joi.string().valid('equal', 'less', 'greater').required()
+    )
+    .length(2),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),
   order: Joi.array()
     .items(
-      Joi.string().valid('id', 'name', 'description', 'date', 'total').required(),
+      Joi.string()
+        .valid('id', 'name', 'description', 'date', 'total')
+        .required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
     .length(2),
