@@ -26,10 +26,7 @@ module.exports = {
       discount: {
         type: Sequelize.FLOAT,
         allowNull: false,
-        defaultValue: 0.0
-      },
-      status: {
-        type: Sequelize.ENUM,
+        defaultValue: 0.0,
       },
       isActive: {
         type: Sequelize.BOOLEAN,

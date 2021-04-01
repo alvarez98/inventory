@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     quantity: DataTypes.INTEGER,
     total: DataTypes.FLOAT,
     discount: DataTypes.FLOAT,
-    status: DataTypes.ENUM,
     isActive: DataTypes.BOOLEAN,
   })
   Sale.associate = (models) => {}

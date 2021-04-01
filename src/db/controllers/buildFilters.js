@@ -90,7 +90,6 @@ exports.buildSaleFilters = (data) => {
   if (data.discount)
     data.discount = { [conditionals[data.discount[1]]]: data.discount[0] }
   if (data.total) data.total = { [conditionals[data.total[1]]]: data.total[0] }
-  if (data.status) data.status = { [Op.like]: data.status }
   return data
 }
 

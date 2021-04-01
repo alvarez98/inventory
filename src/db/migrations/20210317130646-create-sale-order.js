@@ -16,8 +16,10 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM(),
+        type: Sequelize.ENUM,
         allowNull: false,
+        values: ['CANCELED', 'PAID', 'DUE'],
+        defaultValue: 'DUE',
       },
       tax: {
         type: Sequelize.FLOAT,

@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const SaleOrder = sequelize.define('SaleOrder', {
     date: DataTypes.DATE,
     totalSale: DataTypes.FLOAT,
-    status: DataTypes.ENUM,
+    status: DataTypes.ENUM('CANCELED', 'PAID', 'DUE'),
     tax: DataTypes.FLOAT,
     sellerId: DataTypes.STRING,
     isActive: DataTypes.BOOLEAN,

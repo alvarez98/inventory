@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     code: DataTypes.STRING,
     description: DataTypes.STRING,
     cost: DataTypes.FLOAT,
-    status: DataTypes.ENUM(),
+    status: DataTypes.ENUM('DISCONTINUED', 'ACTIVE'),
     image: DataTypes.STRING,
     isActive: DataTypes.BOOLEAN,
   })

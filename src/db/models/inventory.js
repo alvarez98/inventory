@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     buyId: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
     expiration: DataTypes.DATE,
-    status: DataTypes.ENUM(),
+    status: DataTypes.ENUM('EXPIRED', 'ACTIVE'),
     isActive: DataTypes.BOOLEAN,
   })
 

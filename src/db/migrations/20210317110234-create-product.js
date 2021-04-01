@@ -35,8 +35,10 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM(),
+        type: Sequelize.ENUM,
         allowNull: false,
+        values: ['DISCONTINUED', 'ACTIVE'],
+        defaultValue: 'ACTIVE',
       },
       image: {
         type: Sequelize.STRING,

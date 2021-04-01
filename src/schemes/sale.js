@@ -6,7 +6,6 @@ const addSaleSchm = Joi.object({
   quantity: Joi.number().integer().required(),
   total: Joi.number().required(),
   discount: Joi.number().max(100).required(),
-  status: Joi.string().enum().required(),
 })
 
 const updateSaleSchm = Joi.object({
@@ -15,7 +14,6 @@ const updateSaleSchm = Joi.object({
   quantity: Joi.number().integer(),
   total: Joi.number(),
   discount: Joi.number().max(100),
-  status: Joi.string().enum(),
 })
 
 const getOneSaleSchm = Joi.object({
@@ -41,7 +39,6 @@ const getSalesSchm = Joi.object({
       Joi.string().valid('equal', 'less', 'greater').required()
     )
     .length(2),
-  status: Joi.string().enum(),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),
   order: Joi.array()

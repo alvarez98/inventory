@@ -24,8 +24,10 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM(),
+        type: Sequelize.ENUM,
         allowNull: false,
+        values: ['EXPIRED', 'ACTIVE'],
+        defaultValue: 'ACTIVE',
       },
       isActive: {
         type: Sequelize.BOOLEAN,
