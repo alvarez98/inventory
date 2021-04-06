@@ -46,7 +46,7 @@ const getProducts = async ({ query }, res, next) => {
     res.status(200).json({
       data: products.rows,
       count: products.count,
-      current: products.length,
+      current: products.rows.length,
       offset,
     })
   } catch (error) {
@@ -64,7 +64,7 @@ const getProducts = async ({ query }, res, next) => {
 
 const getOneProduct = async ({ params }, res, next) => {
   try {
-    const product = await findOne(models.PRODUCT, params)
+    const product = await findOne(models.PRODUCT, { ...params, isActive: true })
     if (!product) throw new HttpError(404, 'Product not found')
     res.status(200).json({ data: product, message: 'Success' })
   } catch (error) {

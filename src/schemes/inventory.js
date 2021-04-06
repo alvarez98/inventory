@@ -5,7 +5,7 @@ const addInventorySchm = Joi.object({
   buyId: Joi.string().uuid().required(),
   quantity: Joi.number().integer().required(),
   expiration: Joi.date().required(),
-  status: Joi.string().valid().required(),
+  status: Joi.string().valid('EXPIRED', 'ACTIVE').required(),
 })
 
 const updateInventorySchm = Joi.object({
@@ -13,7 +13,7 @@ const updateInventorySchm = Joi.object({
   buyId: Joi.string().uuid(),
   quantity: Joi.number().integer(),
   expiration: Joi.date(),
-  status: Joi.string().valid(),
+  status: Joi.string().valid('EXPIRED', 'ACTIVE'),
 })
 
 const getOneInventorySchm = Joi.object({

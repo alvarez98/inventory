@@ -2,17 +2,17 @@ const express = require('express')
 const router = express.Router()
 
 const {
-  addBuy,
-  getBuys,
-  getOneBuy,
-  updateBuy,
-  deleteBuy,
+  addBuyOrder,
+  getBuyOrders,
+  getOneBuyOrder,
+  updateBuyOrder,
+  deleteBuyOrder,
 } = require('../controllers/buy-order')
 const {
-  addBuySchm,
-  getOneBuySchm,
-  getBuysSchm,
-  updateBuySchm,
+  addBuyOrderSchm,
+  getOneBuyOrderSchm,
+  getBuyOrdersSchm,
+  updateBuyOrderSchm,
 } = require('../schemes/buy-order')
 const validate = require('../middlewares/validate')
 const validateItemNotExist = require('../middlewares/validateItemNotExist')
@@ -21,25 +21,25 @@ const models = require('../db/keys')
 
 router.post(
   '/',
-  validate(addBuySchm, 'body'),
+  validate(addBuyOrderSchm, 'body'),
   validateItemNotExist(models.BUYORDER, 'email', 'body'),
-  addBuy
+  addBuyOrder
 )
-router.get('/', validate(getBuysSchm, 'query'), getBuys)
-router.get('/:id', validate(getOneBuySchm, 'params'), getOneBuy)
+router.get('/', validate(getBuyOrdersSchm, 'query'), getBuyOrders)
+router.get('/:id', validate(getOneBuyOrderSchm, 'params'), getOneBuyOrder)
 router.delete(
   '/:id',
-  validate(getOneBuySchm, 'params'),
+  validate(getOneBuyOrderSchm, 'params'),
   validateItemExist(models.BUYORDER, 'id', 'params'),
-  deleteBuy
+  deleteBuyOrder
 )
 router.put(
   '/:id',
-  validate(getOneBuySchm, 'params'),
+  validate(getOneBuyOrderSchm, 'params'),
   validateItemExist(models.BUYORDER, 'id', 'params'),
-  validate(updateBuySchm, 'body'),
+  validate(updateBuyOrderSchm, 'body'),
   validateItemNotExist(models.BUYORDER, 'email', 'body'),
-  updateBuy
+  updateBuyOrder
 )
 
 module.exports = router

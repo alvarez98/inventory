@@ -1,9 +1,9 @@
 const { Op } = require('sequelize')
 
 const conditionals = {
-  equal: [Op.eq],
-  less: [Op.lte],
-  greater: [Op.gte],
+  equal: Op.eq,
+  less: Op.lte,
+  greater: Op.gte,
 }
 
 exports.buildBuyFilters = (data) => {

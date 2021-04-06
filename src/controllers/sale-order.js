@@ -46,7 +46,7 @@ const getSaleOrders = async ({ query }, res, next) => {
     res.status(200).json({
       data: sale_orders.rows,
       count: sale_orders.count,
-      current: sale_orders.length,
+      current: sale_orders.rows.length,
       offset,
     })
   } catch (error) {
@@ -64,7 +64,7 @@ const getSaleOrders = async ({ query }, res, next) => {
 
 const getOneSaleOrder = async ({ params }, res, next) => {
   try {
-    const sale_order = await findOne(models.SALEORDER, params)
+    const sale_order = await findOne(models.SALEORDER, { ...params, isActive: true })
     if (!sale_order) throw new HttpError(404, 'SaleOrder not found')
     res.status(200).json({ data: sale_order, message: 'Success' })
   } catch (error) {

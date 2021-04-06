@@ -48,7 +48,7 @@ const getBuys = async ({ query }, res, next) => {
       .json({
         data: buys.rows,
         count: buys.count,
-        current: buys.length,
+        current: buys.rows.length,
         offset,
       })
   } catch (error) {
@@ -66,7 +66,7 @@ const getBuys = async ({ query }, res, next) => {
 
 const getOneBuy = async ({ params }, res, next) => {
   try {
-    const buy = await findOne(models.BUY, params)
+    const buy = await findOne(models.BUY, { ...params, isActive: true })
     if (!buy) throw new HttpError(404, 'Buy not found')
     res.status(200).json({ data: buy, message: 'Success' })
   } catch (error) {

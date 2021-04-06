@@ -9,12 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.ENUM('ADMIN', 'CASHIER'),
     isActive: DataTypes.BOOLEAN,
   })
-  User.associate = (models) => {
-    User.hasOne(models.Profile, {
-      foreignKey: 'user_id',
-      as: 'profile',
-    })
-  }
   User.prototype.toJSON = function () {
     const values = Object.assign({}, this.get())
 

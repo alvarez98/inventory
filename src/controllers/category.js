@@ -48,7 +48,7 @@ const getCategories = async ({ query }, res, next) => {
       .json({
         data: categories.rows,
         count: categories.count,
-        current: categories.length,
+        current: categories.rows.length,
         offset,
       })
   } catch (error) {
@@ -66,7 +66,7 @@ const getCategories = async ({ query }, res, next) => {
 
 const getOneCategory = async ({ params }, res, next) => {
   try {
-    const category = await findOne(models.CATEGORY, params)
+    const category = await findOne(models.CATEGORY, { ...params, isActive: true })
     if (!category) throw new HttpError(404, 'Category not found')
     res.status(200).json({ data: category, message: 'Success' })
   } catch (error) {

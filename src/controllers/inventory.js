@@ -48,7 +48,7 @@ const getInventories = async ({ query }, res, next) => {
       .json({
         data: inventories.rows,
         count: inventories.count,
-        current: inventories.length,
+        current: inventories.rows.length,
         offset,
       })
   } catch (error) {
@@ -66,7 +66,7 @@ const getInventories = async ({ query }, res, next) => {
 
 const getOneInventory = async ({ params }, res, next) => {
   try {
-    const inventory = await findOne(models.INVENTORY, params)
+    const inventory = await findOne(models.INVENTORY, { ...params, isActive: true })
     if (!inventory) throw new HttpError(404, 'Inventory not found')
     res.status(200).json({ data: inventory, message: 'Success' })
   } catch (error) {

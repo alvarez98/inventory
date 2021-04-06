@@ -1,26 +1,26 @@
 const Joi = require('joi')
 
 const addProductSchm = Joi.object({
+  name: Joi.string().required(),
   providerId: Joi.string().uuid().required(),
   categoryId: Joi.string().uuid().required(),
-  price: Joi.number().required(),
   code: Joi.number().integer().required(),
   description: Joi.string(),
-  expiration: Joi.date().required(),
   cost: Joi.number().required(),
-  status: Joi.string().valid().required(),
+  price: Joi.number().greater(Joi.ref('cost')).required(),
+  status: Joi.string().valid('DISCONTINUED', 'ACTIVE').required(),
   image: Joi.string().uri().required(),
 })
 
 const updateProductSchm = Joi.object({
+  name: Joi.string(),
   providerId: Joi.string().uuid(),
   categoryId: Joi.string().uuid(),
-  price: Joi.number(),
   code: Joi.number().integer(),
   description: Joi.string(),
-  expiration: Joi.date(),
   cost: Joi.number(),
-  status: Joi.string().valid(),
+  price: Joi.number().greater(Joi.ref('cost')),
+  status: Joi.string().valid('DISCONTINUED', 'ACTIVE'),
   image: Joi.string().uri(),
 })
 

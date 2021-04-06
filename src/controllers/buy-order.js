@@ -17,7 +17,7 @@ const generateID = require('../utils/generateID')
 const addBuyOrder = async ({ body }, res, next) => {
   try {
     body.id = generateID()
-    const buy_order = await add(models.EXPENSE, body)
+    const buy_order = await add(models.BUYORDER, body)
     res.status(201).json({ id: buy_order.id, message: 'Created' })
   } catch (error) {
     next(error)
@@ -37,7 +37,7 @@ const getBuyOrders = async ({ query }, res, next) => {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
     const buy_orders = await find(
-      models.EXPENSE,
+      models.BUYORDER,
       buildBuyOrderFilters(filters),
       order,
       limit,
@@ -48,7 +48,7 @@ const getBuyOrders = async ({ query }, res, next) => {
       .json({
         data: buy_orders.rows,
         count: buy_orders.count,
-        current: buy_orders.length,
+        current: buy_orders.rows.length,
         offset,
       })
   } catch (error) {
@@ -66,7 +66,7 @@ const getBuyOrders = async ({ query }, res, next) => {
 
 const getOneBuyOrder = async ({ params }, res, next) => {
   try {
-    const buy_order = await findOne(models.EXPENSE, params)
+    const buy_order = await findOne(models.BUYORDER, { ...params, isActive: true })
     if (!buy_order) throw new HttpError(404, 'BuyOrder not found')
     res.status(200).json({ data: buy_order, message: 'Success' })
   } catch (error) {
@@ -84,7 +84,7 @@ const getOneBuyOrder = async ({ params }, res, next) => {
 
 const updateBuyOrder = async ({ params, body }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, body)
+    await updateOne(models.BUYORDER, params.id, body)
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {
     next(error)
@@ -101,7 +101,7 @@ const updateBuyOrder = async ({ params, body }, res, next) => {
 
 const deleteBuyOrder = async ({ params }, res, next) => {
   try {
-    await updateOne(models.EXPENSE, params.id, { isActive: false })
+    await updateOne(models.BUYORDER, params.id, { isActive: false })
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
     next(error)

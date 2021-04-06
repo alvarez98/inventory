@@ -4,14 +4,14 @@ const addBuyOrderSchm = Joi.object({
   providerId: Joi.string().uuid().required(),
   totalBuy: Joi.number().required(),
   date: Joi.date().required(),
-  status: Joi.string().valid().required(),
+  status: Joi.string().valid('CANCELED', 'PAID', 'DUE').required(),
 })
 
 const updateBuyOrderSchm = Joi.object({
   providerId: Joi.string().uuid(),
   totalBuy: Joi.number(),
   date: Joi.date(),
-  status: Joi.string().valid(),
+  status: Joi.string().valid('CANCELED', 'PAID', 'DUE'),
 })
 
 const getOneBuyOrderSchm = Joi.object({

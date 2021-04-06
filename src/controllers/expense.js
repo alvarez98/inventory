@@ -48,7 +48,7 @@ const getExpenses = async ({ query }, res, next) => {
       .json({
         data: expenses.rows,
         count: expenses.count,
-        current: expenses.length,
+        current: expenses.rows.length,
         offset,
       })
   } catch (error) {
@@ -66,7 +66,7 @@ const getExpenses = async ({ query }, res, next) => {
 
 const getOneExpense = async ({ params }, res, next) => {
   try {
-    const expense = await findOne(models.EXPENSE, params)
+    const expense = await findOne(models.EXPENSE, { ...params, isActive: true })
     if (!expense) throw new HttpError(404, 'Expense not found')
     res.status(200).json({ data: expense, message: 'Success' })
   } catch (error) {

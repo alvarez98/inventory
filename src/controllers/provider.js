@@ -46,7 +46,7 @@ const getProviders = async ({ query }, res, next) => {
     res.status(200).json({
       data: providers.rows,
       count: providers.count,
-      current: providers.length,
+      current: providers.rows.length,
       offset,
     })
   } catch (error) {
@@ -64,7 +64,7 @@ const getProviders = async ({ query }, res, next) => {
 
 const getOneProvider = async ({ params }, res, next) => {
   try {
-    const provider = await findOne(models.PROVIDER, params)
+    const provider = await findOne(models.PROVIDER, { ...params, isActive: true })
     if (!provider) throw new HttpError(404, 'Provider not found')
     res.status(200).json({ data: provider, message: 'Success' })
   } catch (error) {

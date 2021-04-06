@@ -47,7 +47,7 @@ const getProfiles = async ({ query }, res, next) => {
     res.status(200).json({
       data: profiles.rows,
       count: profiles.count,
-      current: profiles.length,
+      current: profiles.rows.length,
       offset,
     })
   } catch (error) {
@@ -65,7 +65,7 @@ const getProfiles = async ({ query }, res, next) => {
 
 const getOneProfile = async ({ params }, res, next) => {
   try {
-    const profile = await findOne(models.PROFILE, params, [
+    const profile = await findOne(models.PROFILE, { ...params, isActive: true }, [
       {
         model: Models[models.USER],
         as: 'user',

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     country: DataTypes.STRING,
     city: DataTypes.STRING,
     state: DataTypes.STRING,
-    phone: DataTypes.INTEGER,
+    phone: DataTypes.BIGINT,
     email: DataTypes.STRING,
     notes: DataTypes.STRING,
     contactName: DataTypes.STRING,

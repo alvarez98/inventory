@@ -2,18 +2,18 @@ const Joi = require('joi')
 
 const addSaleOrderSchm = Joi.object({
   date: Joi.date().required(),
-  totalSaleOrder: Joi.number().required(),
+  totalSale: Joi.number().required(),
   tax: Joi.number().required(),
   sellerId: Joi.string().uuid().required(),
-  status: Joi.string().enum().required(),
+  status: Joi.string().valid('CANCELED', 'PAID', 'DUE').required(),
 })
 
 const updateSaleOrderSchm = Joi.object({
   date: Joi.date(),
-  totalSaleOrder: Joi.number(),
+  totalSale: Joi.number(),
   tax: Joi.number(),
   sellerId: Joi.string().uuid(),
-  status: Joi.string().enum(),
+  status: Joi.string().valid('CANCELED', 'PAID', 'DUE'),
 })
 
 const getOneSaleOrderSchm = Joi.object({
@@ -27,7 +27,7 @@ const getSaleOrdersSchm = Joi.object({
       Joi.string().valid('equal', 'less', 'greater').required()
     )
     .length(2),
-  totalSaleOrder: Joi.array()
+  totalSale: Joi.array()
     .items(
       Joi.number().required(),
       Joi.string().valid('equal', 'less', 'greater').required()
