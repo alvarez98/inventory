@@ -22,6 +22,34 @@ Set your configuration in your `.env` files depending on the case, based on the 
 - Production configuration: `.env.production`
 ## Deployment :package:
 
+### Run API
+
+- Configure your environment variables on a .env file like in ´.env.example´
+
+- Init your database and server with:
+
+```sh
+$ docker-compose up -d
+```
+
+- To start to adminer interface just navigate to localhost on port 8080
+
+### Run tests
+
+- Create and fill `.env.test` file with the values in `.env.example`
+
+- Create containers and run tests with:
+
+```sh
+$ docker-compose --env-file ./.env.test up -d
+```
+
+- Run following command for view logs:
+
+```sh
+$ docker-compose logs api
+``` 
+
 ### Locally
  
 1. Install dependencies:

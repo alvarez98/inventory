@@ -34,7 +34,7 @@
     ]
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "lint": "standard --fix",
     "start": "nodemon server.js",
     "db:migrate": "sequelize db:migrate",

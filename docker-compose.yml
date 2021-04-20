@@ -9,14 +9,16 @@ services:
       context: .
     volumes:
       - .:/usr/src/app
+    environment:
+      NODE_ENV: ${DOCKER_NODE_ENV}
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     command: >
       sh -c "
-            npm i -g sequelize-cli
-            sequelize db:migrate --env=development &&
-            sequelize db:seed --env=development &&
-            npm start"
+            npm i -g sequelize-cli &&
+            sequelize db:migrate --env=${DOCKER_NODE_ENV} &&
+            sequelize db:seed --env=${DOCKER_NODE_ENV} &&
+            ${DOCKER_COMMAND}"
     depends_on: 
       - db
   db:

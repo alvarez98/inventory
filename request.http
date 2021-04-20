@@ -3,29 +3,29 @@
 
 ##################################### USERS #####################################
 ### GET /users
-GET {{baseURL}}/users
+GET {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
 
 ### POST /users
 POST {{baseURL}}/users
 Content-Type: application/json
 
 {
-    "email": "lololol@gmail.com",
-    "password": "aeap19980929",
-    "firstname": "cris",
-    "lastname": "Herrera"
+    "email": "adolfo@gmail.com",
+    "password": "12345678",
+    "firstname": "Adolfo",
+    "lastname": "Alvarez"
 }
 
 ### PUT /users/:id
-PUT {{baseURL}}/users/536c9c21-f9e9-46be-a84f-4a8fb7b45cc2
+PUT {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
 Content-Type: application/json
 
 {
-    "email": "otro@gmail.com"
+    "firstname": "Esteban"
 }
 
 ### DELETE /users/:id
-DELETE {{baseURL}}/users/536c9c21-f9e9-46be-a84f-4a8fb7b45cc2
+DELETE {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
 
 ##################################### PROFILES #####################################
 ### GET /profiles

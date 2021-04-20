@@ -67,7 +67,7 @@ const getUsers = async ({ query }, res, next) => {
 const getOneUser = async ({ params }, res, next) => {
   try {
     const user = await findOne(models.USER, { ...params, isActive: true })
-    if (!user) throw new HttpError(404, 'User not found')
+    if (!user) throw new HttpError(400, 'User not found')
     res.status(200).json({ data: user, message: 'Success' })
   } catch (error) {
     next(error)

@@ -14,7 +14,7 @@ api.use('/providers', require('./provider'))
 api.use('/sale-orders', require('./sale-order'))
 api.use('/sales', require('./sale'))
 api.get('/', (req, res) => {
-  res.send({ message: 'Home' })
+  res.status(200).send({ message: 'Home' })
 })
 
 module.exports = api
