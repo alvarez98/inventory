@@ -8,18 +8,22 @@ const findOne = require('../db/controllers/findOne')
  * @param {Object} res - Express response object
  * @param {Function} next - Express next middleware function
  */
-const validateItemExist = (modelName, field, site) => async (req, res, next) => {
+const validateItemNotExist = (modelName, field, site) => async (
+  req,
+  res,
+  next
+) => {
   try {
     const filter = {}
-    if (Array.isArray(field)) 
-      filter[field[1]] = req[site][field[0]]
-    else filter[field] = req[site][field]
-    const item = await findOne(modelName, filter, [])
-    if (!item) throw new HttpError(400, `${modelName} not exist`)
+    if (req[site][field]) {
+      filter[field] = req[site][field]
+      const item = await findOne(modelName, filter, [])
+      if (item) throw new HttpError(400, `${field} already in use`)
+    }
     next()
   } catch (error) {
     next(error)
   }
 }
 
-module.exports = validateItemExist
+module.exports = validateItemNotExist

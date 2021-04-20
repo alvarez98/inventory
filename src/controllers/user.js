@@ -1,5 +1,6 @@
 const HttpError = require('../classes/httpError')
 const add = require('../db/controllers/add')
+const { buildUserFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
@@ -37,15 +38,19 @@ const getUsers = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const ntfcs = await find(
+    const users = await find(
       models.USER,
-      filters,
-      ['password'],
+      buildUserFilters(filters),
       order,
       limit,
-      offset,
+      offset
     )
-    res.status(200).json({ data: ntfcs, count: ntfcs.length, offset })
+    res.status(200).json({
+      data: users.rows,
+      count: users.count,
+      current: users.rows.length,
+      offset,
+    })
   } catch (error) {
     next(error)
   }
@@ -61,8 +66,8 @@ const getUsers = async ({ query }, res, next) => {
 
 const getOneUser = async ({ params }, res, next) => {
   try {
-    const user = await findOne(models.USER, params, ['password'])
-    if (!user) throw new HttpError(404, 'User not found')
+    const user = await findOne(models.USER, { ...params, isActive: true })
+    if (!user) throw new HttpError(400, 'User not found')
     res.status(200).json({ data: user, message: 'Success' })
   } catch (error) {
     next(error)

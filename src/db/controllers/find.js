@@ -1,12 +1,13 @@
 const Models = require('../models')
 
-module.exports = (model, filters, excludes, order, limit, offset) =>
-  Models[model].findAll({
+module.exports = (model, filters, order, limit, offset, include = []) => {
+  const attributes = {}
+  if (include.length > 0) attributes.include = include
+  return Models[model].findAndCountAll({
     where: filters,
-    attributes: {
-      exclude: [...excludes, 'isActive'],
-    },
+    attributes,
     order: [order],
     limit,
     offset,
   })
+}

@@ -1,27 +1,300 @@
 @port = 5000
 @baseURL = http://127.0.0.1:{{port}}/api
 
+##################################### USERS #####################################
 ### GET /users
-GET {{baseURL}}/users/
+GET {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
 
 ### POST /users
 POST {{baseURL}}/users
 Content-Type: application/json
 
 {
-    "email": "otro@gmail.com",
-    "password": "aeap19980929",
+    "email": "adolfo@gmail.com",
+    "password": "12345678",
     "firstname": "Adolfo",
     "lastname": "Alvarez"
 }
 
 ### PUT /users/:id
-PUT {{baseURL}}/users/536c9c21-f9e9-46be-a84f-4a8fb7b45cc2
+PUT {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
 Content-Type: application/json
 
 {
-    "email": "otro@gmail.com"
+    "firstname": "Esteban"
 }
 
 ### DELETE /users/:id
-DELETE {{baseURL}}/users/536c9c21-f9e9-46be-a84f-4a8fb7b45cc2
+DELETE {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
+
+##################################### PROFILES #####################################
+### GET /profiles
+GET {{baseURL}}/profiles/85ba83d2-9b9f-4c15-8b88-fc752dbdb634
+
+### POST /profiles
+POST {{baseURL}}/profiles
+Content-Type: application/json
+
+{
+    "gender": "MALE",
+    "dni": "AAPA980929HYNLCD05",
+    "phone": "9991549015",
+    "birthday": "1998/09/29",
+    "address": "C94A #857 x139 y 141 Merida,Yucatan",
+    "user_id": "4d9521a8-4413-4f22-826c-ff22f2e6e0e0"
+}
+
+### PUT /profiles/:id
+PUT {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+Content-Type: application/json
+
+{
+    "phone": "9995549015"
+}
+
+### DELETE /profiles/:id
+DELETE {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+
+##################################### EXPENSES #####################################
+### GET /profiles
+GET {{baseURL}}/expenses
+
+### POST /expenses
+POST {{baseURL}}/expenses
+Content-Type: application/json
+
+{
+    "name": "Compra de lo que sea",
+    "description": "vasrvsd",
+    "date": "2021/03/01",
+    "total": "243425"
+}
+
+### PUT /expenses/:id
+PUT {{baseURL}}/expenses/1c70e39b-7cc2-4ca5-b49f-e6c176afd462
+Content-Type: application/json
+
+{
+    "description": "compre algo"
+}
+
+### DELETE /expenses/:id
+DELETE {{baseURL}}/expenses/1c70e39b-7cc2-4ca5-b49f-e6c176afd462
+
+##################################### buy-orders #####################################
+### GET /buy-orders
+GET {{baseURL}}/buy-orders?totalBuy[]=400&totalBuy[]=greater
+
+### POST /buy-orders
+POST {{baseURL}}/buy-orders
+Content-Type: application/json
+
+{
+    "providerId": "1c70e39b-7cc2-4ca5-b49f-e6c176afd463",
+    "totalBuy": "400.50",
+    "date": "2021/03/01",
+    "status": "PAID"
+}
+
+### PUT /buy-orders/:id
+PUT {{baseURL}}/buy-orders/80b3cd44-6a4b-49e4-951e-152815ee7d45
+Content-Type: application/json
+
+{
+    "status": "CANCELED"
+}
+
+### DELETE /buy-orders/:id
+DELETE {{baseURL}}/buy-orders/80b3cd44-6a4b-49e4-951e-152815ee7d45
+
+##################################### buys #####################################
+### GET /buys
+GET {{baseURL}}/buys
+
+### POST /buys
+POST {{baseURL}}/buys
+Content-Type: application/json
+
+{
+    "productId": "1c70e39b-7cc2-4ca5-b49f-e6c176afd463",
+    "quantity": "10",
+    "buyOrderId": "1c70e39b-7cc2-4ca5-b49f-e6c176afd463"
+}
+
+### PUT /buys/:id
+PUT {{baseURL}}/buys/18d6c282-3d3d-4cc8-b4b5-72e6d5b761d8
+Content-Type: application/json
+
+{
+    "quantity": "12"
+}
+
+### DELETE /buys/:id
+DELETE {{baseURL}}/buys/18d6c282-3d3d-4cc8-b4b5-72e6d5b761d8
+
+##################################### categories #####################################
+### GET /categories
+GET {{baseURL}}/categories
+
+### POST /categories
+POST {{baseURL}}/categories
+Content-Type: application/json
+
+{
+    "name": "Enlatados",
+    "description": "Productos en lata"
+}
+
+### PUT /categories/:id
+PUT {{baseURL}}/categories/2f2fedd7-7830-452c-b380-8a063d315509
+Content-Type: application/json
+
+{
+    "description": "Productos enlatados"
+}
+
+### DELETE /categories/:id
+DELETE {{baseURL}}/categories/2f2fedd7-7830-452c-b380-8a063d315509
+
+##################################### inventories #####################################
+### GET /inventories
+GET {{baseURL}}/inventories
+
+### POST /inventories
+POST {{baseURL}}/inventories
+Content-Type: application/json
+
+{
+    "productId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "buyId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "quantity": "10",
+    "expiration": "2022/03/01",
+    "status": "ACTIVE"
+}
+
+### PUT /inventories/:id
+PUT {{baseURL}}/inventories/2f2fedd7-7830-452c-b380-8a063d315509
+Content-Type: application/json
+
+{
+    "description": "Productos enlatados"
+}
+
+### DELETE /inventories/:id
+DELETE {{baseURL}}/inventories/2f2fedd7-7830-452c-b380-8a063d315509
+
+##################################### products #####################################
+### GET /products
+GET {{baseURL}}/products
+
+### POST /products
+POST {{baseURL}}/products
+Content-Type: application/json
+
+{
+    "name": "Cafe",
+    "providerId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "categoryId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "price": "100",
+    "code": "5476509864",
+    "description": "Cafe negro",
+    "cost": "95",
+    "status": "ACTIVE",
+    "image": "http://imagenes.com/2341"
+}
+
+### PUT /products/:id
+PUT {{baseURL}}/products/323c8776-c174-42c1-9c70-f3941f116858
+Content-Type: application/json
+
+{
+    "image": "http://imagenes.com/2342"
+}
+
+### DELETE /products/:id
+DELETE {{baseURL}}/products/323c8776-c174-42c1-9c70-f3941f116858
+
+##################################### providers #####################################
+### GET /providers
+GET {{baseURL}}/providers
+
+### POST /providers
+POST {{baseURL}}/providers
+Content-Type: application/json
+
+{
+    "name": "Nestle",
+    "address": "C 94a",
+    "country": "Mexico",
+    "city": "Merida",
+    "state": "Yucatan",
+    "phone": "9993428913",
+    "email": "contact@nestle.com",
+    "notes": "Proveedor importante",
+    "contactName": "Jose Perez"
+}
+
+### PUT /providers/:id
+PUT {{baseURL}}/providers/cb1cfc13-cf21-4fd6-8c83-e6356dc46003
+Content-Type: application/json
+
+{
+    "city": "Uman"
+}
+
+### DELETE /providers/:id
+DELETE {{baseURL}}/providers/cb1cfc13-cf21-4fd6-8c83-e6356dc46004
+
+##################################### sales #####################################
+### GET /sales
+GET {{baseURL}}/sales/89ed0226-9a81-48ec-8611-9e0e3b9c0d1a
+
+### POST /sales
+POST {{baseURL}}/sales
+Content-Type: application/json
+
+{
+    "saleOrderId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "productId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "quantity": "1",
+    "total": "100",
+    "discount": "0"
+}
+
+### PUT /sales/:id
+PUT {{baseURL}}/sales/89ed0226-9a81-48ec-8611-9e0e3b9c0d1a
+Content-Type: application/json
+
+{
+    "quantity": "2"
+}
+
+### DELETE /sales/:id
+DELETE {{baseURL}}/sales/89ed0226-9a81-48ec-8611-9e0e3b9c0d1a
+
+##################################### sale-orders #####################################
+### GET /sale-orders
+GET {{baseURL}}/sale-orders/15dcdc5e-501f-4407-b39b-19a79e3f06e2
+
+### POST /sale-orders
+POST {{baseURL}}/sale-orders
+Content-Type: application/json
+
+{
+    "sellerId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "totalSale": "100",
+    "tax": "16",
+    "date": "2021/03/12",
+    "status": "DUE"
+}
+
+### PUT /sale-orders/:id
+PUT {{baseURL}}/sale-orders/15dcdc5e-501f-4407-b39b-19a79e3f06e2
+Content-Type: application/json
+
+{
+    "status": "PAID"
+}
+
+### DELETE /sale-orders/:id
+DELETE {{baseURL}}/sale-orders/15dcdc5e-501f-4407-b39b-19a79e3f06e2
