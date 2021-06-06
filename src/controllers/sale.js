@@ -1,12 +1,13 @@
 const HttpError = require('../classes/httpError')
-const add = require('../db/controllers/add')
+const { v4: uuidv4 } = require('uuid')
 const { buildSaleFilters } = require('../db/controllers/buildFilters')
+const bulkAdd = require('../db/controllers/bulkAdd')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
+const Models = require('../db/models/index')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
-
+const db = require('../db/models/index')
 /**
  * @function addSale
  * @description Controller for POST /api/sales
@@ -14,12 +15,58 @@ const generateID = require('../utils/generateID')
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addSale = async ({ body }, res, next) => {
+const addSale = async ({ body, params }, res, next) => {
+  const transaction = await db.sequelize.transaction()
   try {
-    body.id = generateID()
-    const sale = await add(models.SALE, body)
-    res.status(201).json({ id: sale.id, message: 'Created' })
+    const warnings = [], allowedSales = []
+    const saleOrder = await findOne(
+      models.SALEORDER,
+      { id: params.saleOrderId, isActive: true },
+      [],
+      { transaction }
+    )
+    // Sale logic
+    for (const sale of body.items) {
+      sale.id = uuidv4()
+      sale.saleOrderId = params.saleOrderId
+      // Inventory logic
+      const inventory = await findOne(
+        models.INVENTORY,
+        { productId: sale.productId, isActive: true },
+        [],
+        { transaction }
+      )
+      const product = await findOne(
+        models.PRODUCT,
+        { id: sale.productId, isActive: true },
+        [],
+        { transaction }
+      )
+      if (inventory.quantity < sale.quantity) {
+        warnings.push(
+          `No hay el suficiente stock del producto ${product.name} para la cantidad que se solicita`
+        )
+        continue
+      }
+      // SaleOrder
+      sale.total = product.price * sale.quantity
+      saleOrder.totalSale += sale.total
+      inventory.quantity -= sale.quantity
+      await inventory.save({ transaction })
+      allowedSales.push(sale)
+      if (inventory.quantity <= product.min) {
+        warnings.push(
+          `Se ha alcanzado la cantidad límite establecida para el producto ${product.name}`
+        )
+      }
+    }
+    await saleOrder.save({ transaction })
+    await bulkAdd(models.SALE, allowedSales, { transaction })
+    await transaction.commit()
+    const message = allowedSales.length > 0 ? 'Se agregaron las compras correctamente' : 'No se pudieron guardar las ventas'
+    res.status(200).json({ message, warnings })
   } catch (error) {
+    await transaction.rollback()
     next(error)
   }
 }
@@ -41,16 +88,24 @@ const getSales = async ({ query }, res, next) => {
       buildSaleFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.SALEORDER],
+          as: 'sale_order',
+        },
+        {
+          model: Models[models.PRODUCT],
+          as: 'product',
+        },
+      ]
     )
-    res
-      .status(200)
-      .json({
-        data: sales.rows,
-        count: sales.count,
-        current: sales.rows.length,
-        offset,
-      })
+    res.status(200).json({
+      data: sales.rows,
+      count: sales.count,
+      current: sales.rows.length,
+      offset,
+    })
   } catch (error) {
     next(error)
   }
@@ -66,8 +121,16 @@ const getSales = async ({ query }, res, next) => {
 
 const getOneSale = async ({ params }, res, next) => {
   try {
-    const sale = await findOne(models.SALE, { ...params, isActive: true })
-    if (!sale) throw new HttpError(404, 'Sale not found')
+    const sale = await findOne(models.SALE, { ...params, isActive: true }, [
+      {
+        model: Models[models.SALEORDER],
+        as: 'sale_order',
+      },
+      {
+        model: Models[models.PRODUCT],
+        as: 'product',
+      },
+    ])
     res.status(200).json({ data: sale, message: 'Success' })
   } catch (error) {
     next(error)

@@ -2,20 +2,20 @@ const Joi = require('joi')
 
 const addUserSchm = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  password: Joi.string().min(8).required(),
   firstname: Joi.string().required(),
-  lastname: Joi.string().required(),
+  lastname: Joi.string().required()
 })
 
 const updateUserSchm = Joi.object({
   email: Joi.string().email(),
-  password: Joi.string(),
+  password: Joi.string().min(8),
   firstname: Joi.string(),
-  lastname: Joi.string(),
+  lastname: Joi.string()
 })
 
 const getOneUserSchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getUsersSchm = Joi.object({
@@ -29,12 +29,12 @@ const getUsersSchm = Joi.object({
       Joi.string().valid('id', 'email', 'firstname', 'lastname').required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addUserSchm,
   updateUserSchm,
   getOneUserSchm,
-  getUsersSchm,
+  getUsersSchm
 }

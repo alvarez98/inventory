@@ -4,9 +4,8 @@ const { buildProfileFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
-const models = require('../db/keys')
 const Models = require('../db/models')
-const generateID = require('../utils/generateID')
+const models = require('../db/keys')
 
 /**
  * @function addUser
@@ -17,7 +16,6 @@ const generateID = require('../utils/generateID')
  */
 const addProfile = async ({ body }, res, next) => {
   try {
-    body.id = generateID()
     const profile = await add(models.PROFILE, body)
     res.status(201).json({ id: profile.id, message: 'Created' })
   } catch (error) {
@@ -42,13 +40,19 @@ const getProfiles = async ({ query }, res, next) => {
       buildProfileFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.USER],
+          as: 'user'
+        }
+      ]
     )
     res.status(200).json({
       data: profiles.rows,
       count: profiles.count,
       current: profiles.rows.length,
-      offset,
+      offset
     })
   } catch (error) {
     next(error)
@@ -68,8 +72,8 @@ const getOneProfile = async ({ params }, res, next) => {
     const profile = await findOne(models.PROFILE, { ...params, isActive: true }, [
       {
         model: Models[models.USER],
-        as: 'user',
-      },
+        as: 'user'
+      }
     ])
     if (!profile) throw new HttpError(404, 'Profile not found')
     res.status(200).json({ data: profile, message: 'Success' })
@@ -117,5 +121,5 @@ module.exports = {
   getProfiles,
   getOneProfile,
   updateProfile,
-  deleteProfile,
+  deleteProfile
 }

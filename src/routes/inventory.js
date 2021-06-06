@@ -2,39 +2,34 @@ const express = require('express')
 const router = express.Router()
 
 const {
-  addInventory,
   getInventories,
   getOneInventory,
   updateInventory,
-  deleteInventory,
+  deleteInventory
 } = require('../controllers/inventory')
 const {
-  addInventorySchm,
   getOneInventorySchm,
   getInventoriesSchm,
-  updateInventorySchm,
+  updateInventorySchm
 } = require('../schemes/inventory')
 const validate = require('../middlewares/validate')
 const validateItemNotExist = require('../middlewares/validateItemNotExist')
 const validateItemExist = require('../middlewares/validateItemExist')
 const models = require('../db/keys')
+const { guard, ROLES } = require('../middlewares/guard')
 
-router.post(
-  '/',
-  validate(addInventorySchm, 'body'),
-  validateItemNotExist(models.INVENTORY, 'email', 'body'),
-  addInventory
-)
-router.get('/', validate(getInventoriesSchm, 'query'), getInventories)
-router.get('/:id', validate(getOneInventorySchm, 'params'), getOneInventory)
+router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getInventoriesSchm, 'query'), getInventories)
+router.get('/:id', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getOneInventorySchm, 'params'), getOneInventory)
 router.delete(
   '/:id',
+  guard(ROLES.ADMIN),
   validate(getOneInventorySchm, 'params'),
   validateItemExist(models.INVENTORY, 'id', 'params'),
   deleteInventory
 )
 router.put(
   '/:id',
+  guard(ROLES.ADMIN),
   validate(getOneInventorySchm, 'params'),
   validateItemExist(models.INVENTORY, 'id', 'params'),
   validate(updateInventorySchm, 'body'),

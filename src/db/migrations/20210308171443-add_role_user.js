@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -6,7 +6,7 @@ module.exports = {
       type: Sequelize.ENUM,
       allowNull: false,
       values: ['ADMIN', 'CASHIER'],
-      defaultValue: 'CASHIER',
+      defaultValue: 'CASHIER'
     })
   },
 
@@ -18,4 +18,4 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
   }
-};
+}

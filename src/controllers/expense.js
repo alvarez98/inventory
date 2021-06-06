@@ -5,7 +5,7 @@ const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
+const db = require('../db/models/index')
 
 /**
  * @function addExpense
@@ -15,11 +15,13 @@ const generateID = require('../utils/generateID')
  * @param {Function} next - Express middleware function
  */
 const addExpense = async ({ body }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    body.id = generateID()
-    const expense = await add(models.EXPENSE, body)
+    const expense = await add(models.EXPENSE, body, { transaction: t })
+    await t.commit()
     res.status(201).json({ id: expense.id, message: 'Created' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -49,7 +51,7 @@ const getExpenses = async ({ query }, res, next) => {
         data: expenses.rows,
         count: expenses.count,
         current: expenses.rows.length,
-        offset,
+        offset
       })
   } catch (error) {
     next(error)
@@ -83,10 +85,13 @@ const getOneExpense = async ({ params }, res, next) => {
  */
 
 const updateExpense = async ({ params, body }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    await updateOne(models.EXPENSE, params.id, body)
+    await updateOne(models.EXPENSE, params.id, body, { transaction: t })
+    await t.commit()
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -100,10 +105,13 @@ const updateExpense = async ({ params, body }, res, next) => {
  */
 
 const deleteExpense = async ({ params }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    await updateOne(models.EXPENSE, params.id, { isActive: false })
+    await updateOne(models.EXPENSE, params.id, { isActive: false }, { transaction: t })
+    await t.commit()
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -113,5 +121,5 @@ module.exports = {
   getExpenses,
   getOneExpense,
   updateExpense,
-  deleteExpense,
+  deleteExpense
 }

@@ -1,0 +1,126 @@
+@port = 5000
+@baseURL = http://127.0.0.1:{{port}}/api
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjI5NTMzOTEsImlkIjoiMGZlYmZlZjMtYjE5OS00MWUzLTk3NjgtNDNlNDM2M2YwNWFhIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJC9sM1RXamRFcWpjWkdvbHFLZy5UMS5IbXZhby81Y3VVQ2I3bjN3VGRBZHR1Qy5yLzBld0lDIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwiaWF0IjoxNjIyOTQ5NzkxfQ.j0tSw9h9JSI_1RcuSTseuht-dqoJI7_n3wLF4nW6BzA
+
+### GET /providers
+GET {{baseURL}}/providers
+Authorization: Bearer {{access_token}}
+
+### POST /providers
+POST {{baseURL}}/providers
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "name": "Nestle",
+    "address": "C 94a",
+    "country": "Mexico",
+    "city": "Merida",
+    "state": "Yucatan",
+    "phone": "9993428913",
+    "email": "contact@nestle.com",
+    "notes": "Proveedor importante",
+    "contactName": "Jose Perez"
+}
+
+### GET /categories
+GET {{baseURL}}/categories
+Authorization: Bearer {{access_token}}
+
+### POST /categories
+POST {{baseURL}}/categories
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "name": "Enlatados",
+    "description": "Productos en lata"
+}
+
+### GET /products
+GET {{baseURL}}/products
+Authorization: Bearer {{access_token}}
+
+### POST /products
+POST {{baseURL}}/products
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "name": "Cafe",
+    "providerId": "ef7fdd7e-013f-49f0-94d7-466ca983bada",
+    "categoryId": "7976acf0-b52d-4791-817f-321889fe5391",
+    "price": "90",
+    "code": "5476509864",
+    "description": "Cafe negro",
+    "cost": "60",
+    "min": "10",
+    "max": "20",
+    "status": "ACTIVE",
+    "image": "http://imagenes.com/2341"
+}
+### GET /buy-orders
+GET {{baseURL}}/buy-orders
+
+### POST /buy-orders
+POST {{baseURL}}/buy-orders
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "providerId": "ef7fdd7e-013f-49f0-94d7-466ca983bada",
+    "date": "2021/03/01",
+    "status": "DUE"
+}
+
+### GET /buys
+GET {{baseURL}}/buys
+Authorization: Bearer {{access_token}}
+
+### POST /buys
+POST {{baseURL}}/buy-orders/3c99292f-24c8-458b-bf9b-08520cff0282/buys
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "items": [{
+        "productId": "3c1b99ba-a7ab-42fd-aa1c-5fd32f7b5ffd",
+        "quantity": 10
+    }]
+}
+
+### GET /inventories
+GET {{baseURL}}/inventories
+Authorization: Bearer {{access_token}}
+
+### GET /sales
+GET {{baseURL}}/sales
+
+### POST /sales
+POST {{baseURL}}/sale-orders/77f9c8f3-ba9f-4566-82f3-2020564d33e8/sales
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "items": [
+        {
+            "quantity": 10,
+            "productId": "3c1b99ba-a7ab-42fd-aa1c-5fd32f7b5ffd"
+        }
+    ]
+}
+
+##################################### sale-orders #####################################
+### GET /sale-orders
+GET {{baseURL}}/sale-orders/
+Authorization: Bearer {{access_token}}
+
+### POST /sale-orders
+POST {{baseURL}}/sale-orders
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "date": "2021/03/12",
+    "status": "DUE"
+}

@@ -15,7 +15,7 @@ describe('POST /users', () => {
       email: 'alvarez@gmail.com',
       password: '12345678',
       firstname: 'Adolfo',
-      lastname: 'Alvarez',
+      lastname: 'Alvarez'
     })
     expect(response.statusCode).toBe(201)
     userId = response.body.id
@@ -25,7 +25,7 @@ describe('POST /users', () => {
     const response = await request(app).post('/api/users').send({
       email: 'user@gmail.com',
       password: '12345678',
-      invalidProperty: 'Error',
+      invalidProperty: 'Error'
     })
     expect(response.statusCode).toBe(400)
     done()
@@ -87,6 +87,32 @@ describe('GET /users', () => {
   })
 })
 
+describe('PUT /users/:_id', () => {
+  test('You must update a user', async (done) => {
+    const response = await request(app).put(`/api/users/${userId}`).send({
+      firstname: 'Esteban'
+    })
+    expect(response.statusCode).toBe(200)
+    done()
+  })
+  test("It should return error 'the user does not exist' because the user_id is wrong", async (done) => {
+    const response = await request(app)
+      .put('/api/users/995f46e9-f2cc-4c8e-9e1e-db5aec60c073')
+      .send({
+        firstname: 'Nuevo nombre'
+      })
+    expect(response.statusCode).toBe(400)
+    done()
+  })
+  test('It should return error for invalid body', async (done) => {
+    const response = await request(app).put(`/api/users/${userId}`).send({
+      badProperty: 'Error'
+    })
+    expect(response.statusCode).toBe(400)
+    done()
+  })
+})
+
 describe('DELETE /users/:_id', () => {
   test('You must remove a user', async (done) => {
     const response = await request(app).delete(`/api/users/${userId}`)
@@ -101,43 +127,3 @@ describe('DELETE /users/:_id', () => {
     done()
   })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// describe('PUT /users/:_id', () => {
-//   test('You must update a user', async (done) => {
-//     const response = await request(app).put(`/api/users/${userId}`).send({
-//       name: 'Esteban',
-//     })
-//     expect(response.statusCode).toBe(200)
-//     console.log(response.body)
-//     done()
-//   })
-//   test("It should return error 'the user does not exist' because the user_id is wrong", async (done) => {
-//     const response = await request(app)
-//       .put('/api/users/995f46e9-f2cc-4c8e-9e1e-db5aec60c073')
-//       .send({
-//         name: 'Nuevo nombre',
-//       })
-//     expect(response.statusCode).toBe(400)
-//     done()
-//   })
-//   test('It should return error for invalid body', async (done) => {
-//     const response = await request(app).put(`/api/users/${userId}`).send({
-//       badProperty: 'Error',
-//     })
-//     expect(response.statusCode).toBe(400)
-//     done()
-//   })
-// })

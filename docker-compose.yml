@@ -17,7 +17,7 @@ services:
       sh -c "
             npm i -g sequelize-cli &&
             sequelize db:migrate --env=${DOCKER_NODE_ENV} &&
-            sequelize db:seed --env=${DOCKER_NODE_ENV} &&
+            sequelize db:seed:all --env=${DOCKER_NODE_ENV} &&
             ${DOCKER_COMMAND}"
     depends_on: 
       - db

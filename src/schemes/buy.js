@@ -1,19 +1,26 @@
 const Joi = require('joi')
 
 const addBuySchm = Joi.object({
-  productId: Joi.string().uuid().required(),
-  quantity: Joi.number().integer().required(),
-  buyOrderId: Joi.string().uuid().required(),
+  items: Joi.array().items(
+    Joi.object({
+      productId: Joi.string().uuid().required(),
+      quantity: Joi.number().integer().strict().required()
+    })
+  )
 })
 
 const updateBuySchm = Joi.object({
   productId: Joi.string().uuid(),
   quantity: Joi.number().integer(),
-  buyOrderId: Joi.string().uuid(),
+  buyOrderId: Joi.string().uuid()
+})
+
+const addBuyParamSchm = Joi.object({
+  buyOrderId: Joi.string().uuid().required()
 })
 
 const getOneBuySchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getBuysSchm = Joi.object({
@@ -27,15 +34,18 @@ const getBuysSchm = Joi.object({
   offset: Joi.number().integer(),
   order: Joi.array()
     .items(
-      Joi.string().valid('id', 'quantity', 'productId', 'buyOrderId').required(),
+      Joi.string()
+        .valid('id', 'quantity', 'productId', 'buyOrderId')
+        .required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addBuySchm,
+  addBuyParamSchm,
   updateBuySchm,
   getOneBuySchm,
-  getBuysSchm,
+  getBuysSchm
 }

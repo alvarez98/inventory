@@ -1,49 +1,45 @@
 'use strict'
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Sales', {
       id: {
         type: Sequelize.UUID,
-        unique: true,
-        primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true
       },
       saleOrderId: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.UUID,
+        allowNull: false
       },
       productId: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.UUID,
+        allowNull: false
       },
       quantity: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: false
       },
       total: {
         type: Sequelize.FLOAT,
-        allowNull: false,
-      },
-      discount: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-        defaultValue: 0.0,
+        allowNull: false
       },
       isActive: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     })
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Sales')
-  },
+  }
 }

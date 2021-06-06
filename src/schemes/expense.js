@@ -4,18 +4,18 @@ const addExpenseSchm = Joi.object({
   name: Joi.string().required(),
   description: Joi.string(),
   date: Joi.date().required(),
-  total: Joi.number().required(),
+  total: Joi.number().required()
 })
 
 const updateExpenseSchm = Joi.object({
   name: Joi.string(),
   description: Joi.string(),
   date: Joi.date(),
-  total: Joi.number(),
+  total: Joi.number()
 })
 
 const getOneExpenseSchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getExpensesSchm = Joi.object({
@@ -42,12 +42,12 @@ const getExpensesSchm = Joi.object({
         .required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addExpenseSchm,
   updateExpenseSchm,
   getOneExpenseSchm,
-  getExpensesSchm,
+  getExpensesSchm
 }

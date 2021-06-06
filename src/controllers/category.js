@@ -5,7 +5,6 @@ const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
 
 /**
  * @function addCategory
@@ -16,7 +15,6 @@ const generateID = require('../utils/generateID')
  */
 const addCategory = async ({ body }, res, next) => {
   try {
-    body.id = generateID()
     const category = await add(models.CATEGORY, body)
     res.status(201).json({ id: category.id, message: 'Created' })
   } catch (error) {
@@ -49,7 +47,7 @@ const getCategories = async ({ query }, res, next) => {
         data: categories.rows,
         count: categories.count,
         current: categories.rows.length,
-        offset,
+        offset
       })
   } catch (error) {
     next(error)
@@ -113,5 +111,5 @@ module.exports = {
   getCategories,
   getOneCategory,
   updateCategory,
-  deleteCategory,
+  deleteCategory
 }

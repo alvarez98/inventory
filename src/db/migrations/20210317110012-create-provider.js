@@ -1,61 +1,62 @@
 'use strict'
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Providers', {
       id: {
         type: Sequelize.UUID,
-        unique: true,
-        primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       address: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       city: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       state: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       phone: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.BIGINT
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       notes: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       contactName: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       isActive: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     })
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Providers')
-  },
+  }
 }

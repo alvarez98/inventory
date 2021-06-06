@@ -17,7 +17,7 @@ const addProfileSchm = Joi.object({
     .message(`Age must be over ${MINIMUM_AGE}`)
     .required(),
   address: Joi.string().min(10).required(),
-  user_id: Joi.string().uuid().required(),
+  user_id: Joi.string().uuid().required()
 })
 
 const updateProfileSchm = Joi.object({
@@ -28,11 +28,11 @@ const updateProfileSchm = Joi.object({
     .min(10 ** 9)
     .max(10 ** 10 - 1),
   birthday: Joi.date().max(date).message(`Age must be over ${MINIMUM_AGE}`),
-  address: Joi.string().min(10),
+  address: Joi.string().min(10)
 })
 
 const getOneProfileSchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getProfilesSchm = Joi.object({
@@ -50,12 +50,12 @@ const getProfilesSchm = Joi.object({
       Joi.string().valid('id', 'email', 'firstname', 'lastname').required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addProfileSchm,
   updateProfileSchm,
   getOneProfileSchm,
-  getProfilesSchm,
+  getProfilesSchm
 }

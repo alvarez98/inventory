@@ -6,7 +6,6 @@ const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
 const { encrypt } = require('../utils/bcrypt')
-const generateID = require('../utils/generateID')
 
 /**
  * @function addUser
@@ -17,7 +16,6 @@ const generateID = require('../utils/generateID')
  */
 const addUser = async ({ body }, res, next) => {
   try {
-    body.id = generateID()
     body.password = await encrypt(body.password)
     const user = await add(models.USER, body)
     res.status(201).json({ id: user.id, message: 'Created' })
@@ -49,7 +47,7 @@ const getUsers = async ({ query }, res, next) => {
       data: users.rows,
       count: users.count,
       current: users.rows.length,
-      offset,
+      offset
     })
   } catch (error) {
     next(error)
@@ -114,5 +112,5 @@ module.exports = {
   getUsers,
   getOneUser,
   updateUser,
-  deleteUser,
+  deleteUser
 }

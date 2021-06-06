@@ -12,7 +12,7 @@ const addProviderSchm = Joi.object({
     .required(),
   email: Joi.string().email().required(),
   notes: Joi.string().required(),
-  contactName: Joi.string().required(),
+  contactName: Joi.string().required()
 })
 
 const updateProviderSchm = Joi.object({
@@ -26,11 +26,11 @@ const updateProviderSchm = Joi.object({
     .messages({ 'string.pattern.base': 'Invalid phone number.' }),
   email: Joi.string().email(),
   notes: Joi.string(),
-  contactName: Joi.string(),
+  contactName: Joi.string()
 })
 
 const getOneProviderSchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getProvidersSchm = Joi.object({
@@ -49,12 +49,12 @@ const getProvidersSchm = Joi.object({
         .required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addProviderSchm,
   updateProviderSchm,
   getOneProviderSchm,
-  getProvidersSchm,
+  getProvidersSchm
 }

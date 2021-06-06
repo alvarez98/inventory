@@ -1,50 +1,37 @@
 'use strict'
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Inventories', {
       id: {
         type: Sequelize.UUID,
-        unique: true,
-        primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true
       },
       productId: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      buyId: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.UUID,
+        allowNull: false
       },
       quantity: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      expiration: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      status: {
-        type: Sequelize.ENUM,
-        allowNull: false,
-        values: ['EXPIRED', 'ACTIVE'],
-        defaultValue: 'ACTIVE',
+        allowNull: false
       },
       isActive: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     })
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Inventories')
-  },
+  }
 }

@@ -8,18 +8,44 @@ const findOne = require('../db/controllers/findOne')
  * @param {Object} res - Express response object
  * @param {Function} next - Express next middleware function
  */
-const validateItemExist = (modelName, field, site) => async (req, res, next) => {
-  try {
-    const filter = {}
-    if (Array.isArray(field)) 
-      filter[field[1]] = req[site][field[0]]
-    else filter[field] = req[site][field]
-    const item = await findOne(modelName, filter, [])
-    if (!item) throw new HttpError(400, `${modelName} not exist`)
-    next()
-  } catch (error) {
-    next(error)
-  }
-}
+const validateItemExist =
+  (model, reqProperty, attribute, errorMessage, key = attribute, arrayKey = null) =>
+    async (req, res, next) => {
+      try {
+        const valueToValidate = req[reqProperty][attribute]
+        if (valueToValidate) {
+        // Values array
+          if (Array.isArray(valueToValidate)) {
+            for (const item of valueToValidate) {
+              const isExist = await findOne(model, {
+                [key]: item[arrayKey],
+                isActive: true
+              })
+              if (!isExist) {
+                throw new HttpError(400, errorMessage, {
+                  field: [reqProperty, attribute],
+                  value: valueToValidate
+                })
+              }
+            }
+          // Unique value
+          } else {
+            const isExist = await findOne(model, {
+              [key]: valueToValidate,
+              isActive: true
+            })
+            if (!isExist) {
+              throw new HttpError(400, errorMessage, {
+                field: [reqProperty, attribute],
+                value: valueToValidate
+              })
+            }
+          }
+        }
+        next()
+      } catch (error) {
+        next(error)
+      }
+    }
 
 module.exports = validateItemExist

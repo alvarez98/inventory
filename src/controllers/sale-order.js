@@ -5,7 +5,6 @@ const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
 
 /**
  * @function addSaleOrder
@@ -16,9 +15,9 @@ const generateID = require('../utils/generateID')
  */
 const addSaleOrder = async ({ body }, res, next) => {
   try {
-    body.id = generateID()
-    const sale_order = await add(models.SALEORDER, body)
-    res.status(201).json({ id: sale_order.id, message: 'Created' })
+    body.totalSale = 0
+    const saleOrder = await add(models.SALEORDER, body)
+    res.status(201).json({ id: saleOrder.id, message: 'Created' })
   } catch (error) {
     next(error)
   }
@@ -36,7 +35,7 @@ const getSaleOrders = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const sale_orders = await find(
+    const saleOrders = await find(
       models.SALEORDER,
       buildSaleOrderFilters(filters),
       order,
@@ -44,10 +43,10 @@ const getSaleOrders = async ({ query }, res, next) => {
       offset
     )
     res.status(200).json({
-      data: sale_orders.rows,
-      count: sale_orders.count,
-      current: sale_orders.rows.length,
-      offset,
+      data: saleOrders.rows,
+      count: saleOrders.count,
+      current: saleOrders.rows.length,
+      offset
     })
   } catch (error) {
     next(error)
@@ -64,9 +63,9 @@ const getSaleOrders = async ({ query }, res, next) => {
 
 const getOneSaleOrder = async ({ params }, res, next) => {
   try {
-    const sale_order = await findOne(models.SALEORDER, { ...params, isActive: true })
-    if (!sale_order) throw new HttpError(404, 'SaleOrder not found')
-    res.status(200).json({ data: sale_order, message: 'Success' })
+    const saleOrder = await findOne(models.SALEORDER, { ...params, isActive: true })
+    if (!saleOrder) throw new HttpError(404, 'SaleOrder not found')
+    res.status(200).json({ data: saleOrder, message: 'Success' })
   } catch (error) {
     next(error)
   }
@@ -111,5 +110,5 @@ module.exports = {
   getSaleOrders,
   getOneSaleOrder,
   updateSaleOrder,
-  deleteSaleOrder,
+  deleteSaleOrder
 }

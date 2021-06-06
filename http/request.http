@@ -1,23 +1,44 @@
 @port = 5000
 @baseURL = http://127.0.0.1:{{port}}/api
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjI5NDc3MjgsImlkIjoiMGZlYmZlZjMtYjE5OS00MWUzLTk3NjgtNDNlNDM2M2YwNWFhIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJC9sM1RXamRFcWpjWkdvbHFLZy5UMS5IbXZhby81Y3VVQ2I3bjN3VGRBZHR1Qy5yLzBld0lDIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwiaWF0IjoxNjIyOTQ2ODI4fQ.ZHDHJJ2msK9ptm-bLJVm3ekWyX7q7oHPlsOFHjqlZu8
 
 ##################################### USERS #####################################
 ### GET /users
-GET {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
+GET {{baseURL}}/users
+Authorization: Bearer {{access_token}}
 
 ### POST /users
 POST {{baseURL}}/users
+Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "email": "adolfo@gmail.com",
+    "email": "aeap@gmail.com",
     "password": "12345678",
     "firstname": "Adolfo",
     "lastname": "Alvarez"
 }
 
+### POST /auth/signin
+POST {{baseURL}}/auth/signin
+Content-Type: application/json
+
+{
+    "email": "admin@mail.com",
+    "password": "admin_34632"
+}
+
+### POST /auth/signin
+POST {{baseURL}}/auth/signin
+Content-Type: application/json
+
+{
+    "email": "adolfo@gmail.com",
+    "password": "12345678"
+}
+
 ### PUT /users/:id
-PUT {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
+PUT {{baseURL}}/users/11ee22c9-2c9c-4159-aa8f-2ee4c4f4ee76
 Content-Type: application/json
 
 {
@@ -25,11 +46,11 @@ Content-Type: application/json
 }
 
 ### DELETE /users/:id
-DELETE {{baseURL}}/users/eed74108-3446-4d7b-94b4-c85280f0929f
+DELETE {{baseURL}}/users/11ee22c9-2c9c-4159-aa8f-2ee4c4f4ee76
 
 ##################################### PROFILES #####################################
 ### GET /profiles
-GET {{baseURL}}/profiles/85ba83d2-9b9f-4c15-8b88-fc752dbdb634
+GET {{baseURL}}/profiles/8e8ac86e-7932-4850-9d27-654569a14358
 
 ### POST /profiles
 POST {{baseURL}}/profiles
@@ -37,15 +58,15 @@ Content-Type: application/json
 
 {
     "gender": "MALE",
-    "dni": "AAPA980929HYNLCD05",
+    "dni": "AAPA980929HYNLCD03",
     "phone": "9991549015",
     "birthday": "1998/09/29",
     "address": "C94A #857 x139 y 141 Merida,Yucatan",
-    "user_id": "4d9521a8-4413-4f22-826c-ff22f2e6e0e0"
+    "user_id": "3fccab42-b378-4ddc-b8fc-bad803289598"
 }
 
 ### PUT /profiles/:id
-PUT {{baseURL}}/profiles/6d67f6b3-4cf1-4f4f-bebd-58f4eca45fd1
+PUT {{baseURL}}/profiles/8e8ac86e-7932-4850-9d27-654569a14358
 Content-Type: application/json
 
 {
@@ -83,17 +104,16 @@ DELETE {{baseURL}}/expenses/1c70e39b-7cc2-4ca5-b49f-e6c176afd462
 
 ##################################### buy-orders #####################################
 ### GET /buy-orders
-GET {{baseURL}}/buy-orders?totalBuy[]=400&totalBuy[]=greater
+GET {{baseURL}}/buy-orders
 
 ### POST /buy-orders
 POST {{baseURL}}/buy-orders
 Content-Type: application/json
 
 {
-    "providerId": "1c70e39b-7cc2-4ca5-b49f-e6c176afd463",
-    "totalBuy": "400.50",
+    "providerId": "608e7b24-0d9b-4cef-8520-60c8a18155f0",
     "date": "2021/03/01",
-    "status": "PAID"
+    "status": "DUE"
 }
 
 ### PUT /buy-orders/:id
@@ -112,13 +132,20 @@ DELETE {{baseURL}}/buy-orders/80b3cd44-6a4b-49e4-951e-152815ee7d45
 GET {{baseURL}}/buys
 
 ### POST /buys
-POST {{baseURL}}/buys
+POST {{baseURL}}/buy-orders/4eaaf6c5-947d-4d15-aecc-e3f289a8fa6a/buys
 Content-Type: application/json
 
 {
-    "productId": "1c70e39b-7cc2-4ca5-b49f-e6c176afd463",
-    "quantity": "10",
-    "buyOrderId": "1c70e39b-7cc2-4ca5-b49f-e6c176afd463"
+    "items": [{
+        "productId": "bbfaca16-b2ee-4c45-a55b-d378bfc8ff9b",
+        "quantity": 2,
+        "expiration": "2021-07-03T02:02:46.945Z"
+    },
+    {
+        "productId": "bbfaca16-b2ee-4c45-a55b-d378bfc8ff9b",
+        "quantity": 3,
+        "expiration": "2021-07-05T02:02:46.945Z"
+    }]
 }
 
 ### PUT /buys/:id
@@ -160,18 +187,6 @@ DELETE {{baseURL}}/categories/2f2fedd7-7830-452c-b380-8a063d315509
 ### GET /inventories
 GET {{baseURL}}/inventories
 
-### POST /inventories
-POST {{baseURL}}/inventories
-Content-Type: application/json
-
-{
-    "productId": "2f2fedd7-7830-452c-b380-8a063d315509",
-    "buyId": "2f2fedd7-7830-452c-b380-8a063d315509",
-    "quantity": "10",
-    "expiration": "2022/03/01",
-    "status": "ACTIVE"
-}
-
 ### PUT /inventories/:id
 PUT {{baseURL}}/inventories/2f2fedd7-7830-452c-b380-8a063d315509
 Content-Type: application/json
@@ -193,18 +208,20 @@ Content-Type: application/json
 
 {
     "name": "Cafe",
-    "providerId": "2f2fedd7-7830-452c-b380-8a063d315509",
-    "categoryId": "2f2fedd7-7830-452c-b380-8a063d315509",
+    "providerId": "608e7b24-0d9b-4cef-8520-60c8a18155f0",
+    "categoryId": "518646dd-4ac7-43f7-a22a-87a79cd2f497",
     "price": "100",
     "code": "5476509864",
     "description": "Cafe negro",
     "cost": "95",
+    "min": "10",
+    "max": "20",
     "status": "ACTIVE",
     "image": "http://imagenes.com/2341"
 }
 
 ### PUT /products/:id
-PUT {{baseURL}}/products/323c8776-c174-42c1-9c70-f3941f116858
+PUT {{baseURL}}/products/e2c68283-0a9c-4093-9c12-4ac604fe0063
 Content-Type: application/json
 
 {
@@ -212,7 +229,7 @@ Content-Type: application/json
 }
 
 ### DELETE /products/:id
-DELETE {{baseURL}}/products/323c8776-c174-42c1-9c70-f3941f116858
+DELETE {{baseURL}}/products/e2c68283-0a9c-4093-9c12-4ac604fe0063
 
 ##################################### providers #####################################
 ### GET /providers
@@ -247,7 +264,7 @@ DELETE {{baseURL}}/providers/cb1cfc13-cf21-4fd6-8c83-e6356dc46004
 
 ##################################### sales #####################################
 ### GET /sales
-GET {{baseURL}}/sales/89ed0226-9a81-48ec-8611-9e0e3b9c0d1a
+GET {{baseURL}}/sales
 
 ### POST /sales
 POST {{baseURL}}/sales
@@ -255,8 +272,8 @@ Content-Type: application/json
 
 {
     "saleOrderId": "2f2fedd7-7830-452c-b380-8a063d315509",
-    "productId": "2f2fedd7-7830-452c-b380-8a063d315509",
-    "quantity": "1",
+    "productId": "93283111-bf87-4d36-8b99-b6f679b3ef4a",
+    "quantity": "3",
     "total": "100",
     "discount": "0"
 }
@@ -278,10 +295,10 @@ GET {{baseURL}}/sale-orders/15dcdc5e-501f-4407-b39b-19a79e3f06e2
 
 ### POST /sale-orders
 POST {{baseURL}}/sale-orders
+Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "sellerId": "2f2fedd7-7830-452c-b380-8a063d315509",
     "totalSale": "100",
     "tax": "16",
     "date": "2021/03/12",

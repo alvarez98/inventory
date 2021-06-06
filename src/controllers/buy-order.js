@@ -4,8 +4,8 @@ const { buildBuyOrderFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
+const Models = require('../db/models/index')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
 
 /**
  * @function addBuyOrder
@@ -16,9 +16,9 @@ const generateID = require('../utils/generateID')
  */
 const addBuyOrder = async ({ body }, res, next) => {
   try {
-    body.id = generateID()
-    const buy_order = await add(models.BUYORDER, body)
-    res.status(201).json({ id: buy_order.id, message: 'Created' })
+    body.totalBuy = 0.0
+    const buyOrder = await add(models.BUYORDER, body)
+    res.status(201).json({ id: buyOrder.id, message: 'Created' })
   } catch (error) {
     next(error)
   }
@@ -36,21 +36,25 @@ const getBuyOrders = async ({ query }, res, next) => {
   try {
     const { limit = 20, order = ['id', 'ASC'], offset = 0, ...filters } = query
     filters.isActive = true
-    const buy_orders = await find(
+    const buyOrder = await find(
       models.BUYORDER,
       buildBuyOrderFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.PROVIDER],
+          as: 'provider'
+        }
+      ]
     )
-    res
-      .status(200)
-      .json({
-        data: buy_orders.rows,
-        count: buy_orders.count,
-        current: buy_orders.rows.length,
-        offset,
-      })
+    res.status(200).json({
+      data: buyOrder.rows,
+      count: buyOrder.count,
+      current: buyOrder.rows.length,
+      offset
+    })
   } catch (error) {
     next(error)
   }
@@ -66,9 +70,18 @@ const getBuyOrders = async ({ query }, res, next) => {
 
 const getOneBuyOrder = async ({ params }, res, next) => {
   try {
-    const buy_order = await findOne(models.BUYORDER, { ...params, isActive: true })
-    if (!buy_order) throw new HttpError(404, 'BuyOrder not found')
-    res.status(200).json({ data: buy_order, message: 'Success' })
+    const buyOrder = await findOne(
+      models.BUYORDER,
+      { ...params, isActive: true },
+      [
+        {
+          model: Models[models.PROVIDER],
+          as: 'provider'
+        }
+      ]
+    )
+    if (!buyOrder) throw new HttpError(404, 'BuyOrder not found')
+    res.status(200).json({ data: buyOrder, message: 'Success' })
   } catch (error) {
     next(error)
   }
@@ -113,5 +126,5 @@ module.exports = {
   getBuyOrders,
   getOneBuyOrder,
   updateBuyOrder,
-  deleteBuyOrder,
+  deleteBuyOrder
 }

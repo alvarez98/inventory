@@ -5,7 +5,8 @@ const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
+const Models = require('../db/models/index')
+const db = require('../db/models/index')
 
 /**
  * @function addProduct
@@ -15,11 +16,17 @@ const generateID = require('../utils/generateID')
  * @param {Function} next - Express middleware function
  */
 const addProduct = async ({ body }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    body.id = generateID()
-    const product = await add(models.PRODUCT, body)
+    const product = await add(models.PRODUCT, body, { transaction: t })
+    await add(models.INVENTORY, {
+      productId: product.id,
+      quantity: 0
+    }, { transaction: t })
+    await t.commit()
     res.status(201).json({ id: product.id, message: 'Created' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -41,13 +48,23 @@ const getProducts = async ({ query }, res, next) => {
       buildProductFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.PROVIDER],
+          as: 'provider'
+        },
+        {
+          model: Models[models.CATEGORY],
+          as: 'category'
+        }
+      ]
     )
     res.status(200).json({
       data: products.rows,
       count: products.count,
       current: products.rows.length,
-      offset,
+      offset
     })
   } catch (error) {
     next(error)
@@ -64,7 +81,16 @@ const getProducts = async ({ query }, res, next) => {
 
 const getOneProduct = async ({ params }, res, next) => {
   try {
-    const product = await findOne(models.PRODUCT, { ...params, isActive: true })
+    const product = await findOne(models.PRODUCT, { ...params, isActive: true }, [
+      {
+        model: Models[models.PROVIDER],
+        as: 'provider'
+      },
+      {
+        model: Models[models.CATEGORY],
+        as: 'category'
+      }
+    ])
     if (!product) throw new HttpError(404, 'Product not found')
     res.status(200).json({ data: product, message: 'Success' })
   } catch (error) {
@@ -98,10 +124,13 @@ const updateProduct = async ({ params, body }, res, next) => {
  */
 
 const deleteProduct = async ({ params }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
     await updateOne(models.PRODUCT, params.id, { isActive: false })
+    await t.commit()
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -111,5 +140,5 @@ module.exports = {
   getProducts,
   getOneProduct,
   updateProduct,
-  deleteProduct,
+  deleteProduct
 }

@@ -1,11 +1,13 @@
 const HttpError = require('../classes/httpError')
-const add = require('../db/controllers/add')
+const bulkAdd = require('../db/controllers/bulkAdd')
 const { buildBuyFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
+const Models = require('../db/models/index')
+const db = require('../db/models/index')
+const { v4: uuidv4 } = require('uuid')
 
 /**
  * @function addBuy
@@ -14,12 +16,51 @@ const generateID = require('../utils/generateID')
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addBuy = async ({ body }, res, next) => {
+const addBuy = async ({ body, params }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    body.id = generateID()
-    const buy = await add(models.BUY, body)
-    res.status(201).json({ id: buy.id, message: 'Created' })
+    const warnings = []
+    const buyOrder = await findOne(
+      models.BUYORDER,
+      { id: params.buyOrderId, isActive: true },
+      [],
+      { transaction: t }
+    )
+    // Buy/BuyOrder logic
+    for (const buy of body.items) {
+      buy.id = uuidv4()
+      buy.buyOrderId = params.buyOrderId
+      const product = await findOne(
+        models.PRODUCT,
+        { id: buy.productId, isActive: true },
+        [],
+        { transaction: t }
+      )
+      buy.total = product.cost * buy.quantity
+      buyOrder.totalBuy += buy.total
+
+      // Inventory logic
+      const inventory = await findOne(
+        models.INVENTORY,
+        { productId: buy.productId, isActive: true },
+        [],
+        { transaction: t }
+      )
+      inventory.quantity += buy.quantity
+      await inventory.save({ transaction: t })
+      if (inventory.quantity >= product.max)
+        warnings.push(
+          `Se alcanzó el máximo establecido para el producto: ${product.name}`
+        )
+    }
+    await buyOrder.save({ transaction: t })
+    await bulkAdd(models.BUY, body.items, { transaction: t })
+    await t.commit()
+    res
+      .status(201)
+      .json({ message: 'Las compras se agregaron correctamente', warnings })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -41,16 +82,24 @@ const getBuys = async ({ query }, res, next) => {
       buildBuyFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.PRODUCT],
+          as: 'product',
+        },
+        {
+          model: Models[models.BUYORDER],
+          as: 'buy_order',
+        },
+      ]
     )
-    res
-      .status(200)
-      .json({
-        data: buys.rows,
-        count: buys.count,
-        current: buys.rows.length,
-        offset,
-      })
+    res.status(200).json({
+      data: buys.rows,
+      count: buys.count,
+      current: buys.rows.length,
+      offset,
+    })
   } catch (error) {
     next(error)
   }
@@ -66,7 +115,16 @@ const getBuys = async ({ query }, res, next) => {
 
 const getOneBuy = async ({ params }, res, next) => {
   try {
-    const buy = await findOne(models.BUY, { ...params, isActive: true })
+    const buy = await findOne(models.BUY, { ...params, isActive: true }, [
+      {
+        model: Models[models.PRODUCT],
+        as: 'product',
+      },
+      {
+        model: Models[models.BUYORDER],
+        as: 'buy_order',
+      },
+    ])
     if (!buy) throw new HttpError(404, 'Buy not found')
     res.status(200).json({ data: buy, message: 'Success' })
   } catch (error) {
@@ -83,10 +141,13 @@ const getOneBuy = async ({ params }, res, next) => {
  */
 
 const updateBuy = async ({ params, body }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    await updateOne(models.BUY, params.id, body)
+    await updateOne(models.BUY, params.id, body, { transaction: t })
+    await t.commit()
     res.status(200).json({ id: params.id, message: 'Updated' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -100,10 +161,18 @@ const updateBuy = async ({ params, body }, res, next) => {
  */
 
 const deleteBuy = async ({ params }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    await updateOne(models.BUY, params.id, { isActive: false })
+    await updateOne(
+      models.BUY,
+      params.id,
+      { isActive: false },
+      { transaction: t }
+    )
+    await t.commit()
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }

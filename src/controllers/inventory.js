@@ -1,29 +1,10 @@
 const HttpError = require('../classes/httpError')
-const add = require('../db/controllers/add')
 const { buildInventoryFilters } = require('../db/controllers/buildFilters')
 const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
-
-/**
- * @function addInventory
- * @description Controller for POST /api/inventories
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express middleware function
- */
-const addInventory = async ({ body }, res, next) => {
-  try {
-    body.id = generateID()
-    const inventory = await add(models.INVENTORY, body)
-    res.status(201).json({ id: inventory.id, message: 'Created' })
-  } catch (error) {
-    next(error)
-  }
-}
-
+const Models = require('../db/models/index')
 /**
  * @function getInventories
  * @description Controller for GET /api/inventories
@@ -41,16 +22,20 @@ const getInventories = async ({ query }, res, next) => {
       buildInventoryFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.PRODUCT],
+          as: 'product'
+        }
+      ]
     )
-    res
-      .status(200)
-      .json({
-        data: inventories.rows,
-        count: inventories.count,
-        current: inventories.rows.length,
-        offset,
-      })
+    res.status(200).json({
+      data: inventories.rows,
+      count: inventories.count,
+      current: inventories.rows.length,
+      offset
+    })
   } catch (error) {
     next(error)
   }
@@ -66,7 +51,20 @@ const getInventories = async ({ query }, res, next) => {
 
 const getOneInventory = async ({ params }, res, next) => {
   try {
-    const inventory = await findOne(models.INVENTORY, { ...params, isActive: true })
+    const inventory = await findOne(
+      models.INVENTORY,
+      { ...params, isActive: true },
+      [
+        {
+          model: Models[models.PRODUCT],
+          as: 'product'
+        },
+        {
+          model: Models[models.BUY],
+          as: 'buy'
+        }
+      ]
+    )
     if (!inventory) throw new HttpError(404, 'Inventory not found')
     res.status(200).json({ data: inventory, message: 'Success' })
   } catch (error) {
@@ -109,9 +107,8 @@ const deleteInventory = async ({ params }, res, next) => {
 }
 
 module.exports = {
-  addInventory,
   getInventories,
   getOneInventory,
   updateInventory,
-  deleteInventory,
+  deleteInventory
 }

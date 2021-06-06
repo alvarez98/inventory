@@ -6,35 +6,39 @@ const {
   getSales,
   getOneSale,
   updateSale,
-  deleteSale,
+  deleteSale
 } = require('../controllers/sale')
 const {
   addSaleSchm,
   getOneSaleSchm,
   getSalesSchm,
-  updateSaleSchm,
+  updateSaleSchm
 } = require('../schemes/sale')
 const validate = require('../middlewares/validate')
 const validateItemNotExist = require('../middlewares/validateItemNotExist')
 const validateItemExist = require('../middlewares/validateItemExist')
 const models = require('../db/keys')
+const { guard, ROLES } = require('../middlewares/guard')
 
 router.post(
   '/',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
   validate(addSaleSchm, 'body'),
   validateItemNotExist(models.SALE, 'email', 'body'),
   addSale
 )
-router.get('/', validate(getSalesSchm, 'query'), getSales)
-router.get('/:id', validate(getOneSaleSchm, 'params'), getOneSale)
+router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getSalesSchm, 'query'), getSales)
+router.get('/:id', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getOneSaleSchm, 'params'), getOneSale)
 router.delete(
   '/:id',
+  guard(ROLES.ADMIN),
   validate(getOneSaleSchm, 'params'),
   validateItemExist(models.SALE, 'id', 'params'),
   deleteSale
 )
 router.put(
   '/:id',
+  guard(ROLES.ADMIN),
   validate(getOneSaleSchm, 'params'),
   validateItemExist(models.SALE, 'id', 'params'),
   validate(updateSaleSchm, 'body'),

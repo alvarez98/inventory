@@ -1,6 +1,12 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const Provider = sequelize.define('Provider', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true
+    },
     name: DataTypes.STRING,
     address: DataTypes.STRING,
     country: DataTypes.STRING,
@@ -10,9 +16,11 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     notes: DataTypes.STRING,
     contactName: DataTypes.STRING,
-    isActive: DataTypes.BOOLEAN,
+    isActive: DataTypes.BOOLEAN
   })
-  Provider.associate = (models) => {}
+
+  Provider.associate = (models) => {
+  }
 
   Provider.prototype.toJSON = function () {
     const values = Object.assign({}, this.get())

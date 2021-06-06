@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.changeColumn('Expenses', 'isActive', {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true,
+      defaultValue: true
     })
   },
 
@@ -17,4 +17,4 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
   }
-};
+}

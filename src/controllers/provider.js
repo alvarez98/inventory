@@ -5,7 +5,6 @@ const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
-const generateID = require('../utils/generateID')
 
 /**
  * @function addProvider
@@ -16,7 +15,6 @@ const generateID = require('../utils/generateID')
  */
 const addProvider = async ({ body }, res, next) => {
   try {
-    body.id = generateID()
     const provider = await add(models.PROVIDER, body)
     res.status(201).json({ id: provider.id, message: 'Created' })
   } catch (error) {
@@ -47,7 +45,7 @@ const getProviders = async ({ query }, res, next) => {
       data: providers.rows,
       count: providers.count,
       current: providers.rows.length,
-      offset,
+      offset
     })
   } catch (error) {
     next(error)
@@ -111,5 +109,5 @@ module.exports = {
   getProviders,
   getOneProvider,
   updateProvider,
-  deleteProvider,
+  deleteProvider
 }

@@ -1,7 +1,7 @@
 'use strict'
 const express = require('express')
 const api = express.Router()
-
+api.use('/auth', require('./auth'))
 api.use('/profiles', require('./profile'))
 api.use('/expenses', require('./expense'))
 api.use('/users', require('./user'))

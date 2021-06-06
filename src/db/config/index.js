@@ -7,7 +7,7 @@ module.exports = {
     database: Configuration.get(Keys.DB_NAME),
     host: Configuration.get(Keys.DB_HOST),
     dialect: 'postgres',
-    port: Configuration.get(Keys.DB_PORT),
+    port: Configuration.get(Keys.DB_PORT)
   },
   test: {
     username: Configuration.get(Keys.DB_USER),
@@ -16,6 +16,7 @@ module.exports = {
     host: Configuration.get(Keys.DB_HOST),
     dialect: 'postgres',
     port: Configuration.get(Keys.DB_PORT),
+    logging: false
   },
   production: {
     username: Configuration.get(Keys.DB_USER),
@@ -23,6 +24,6 @@ module.exports = {
     database: Configuration.get(Keys.DB_NAME),
     host: Configuration.get(Keys.DB_HOST),
     dialect: 'postgres',
-    port: Configuration.get(Keys.DB_PORT),
-  },
+    port: Configuration.get(Keys.DB_PORT)
+  }
 }

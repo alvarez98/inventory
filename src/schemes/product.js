@@ -7,9 +7,11 @@ const addProductSchm = Joi.object({
   code: Joi.number().integer().required(),
   description: Joi.string(),
   cost: Joi.number().required(),
+  min: Joi.number().integer().less(Joi.ref('max')).required(),
+  max: Joi.number().integer().required(),
   price: Joi.number().greater(Joi.ref('cost')).required(),
   status: Joi.string().valid('DISCONTINUED', 'ACTIVE').required(),
-  image: Joi.string().uri().required(),
+  image: Joi.string().uri().required()
 })
 
 const updateProductSchm = Joi.object({
@@ -21,11 +23,11 @@ const updateProductSchm = Joi.object({
   cost: Joi.number(),
   price: Joi.number().greater(Joi.ref('cost')),
   status: Joi.string().valid('DISCONTINUED', 'ACTIVE'),
-  image: Joi.string().uri(),
+  image: Joi.string().uri()
 })
 
 const getOneProductSchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getProductsSchm = Joi.object({
@@ -61,12 +63,12 @@ const getProductsSchm = Joi.object({
         .required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addProductSchm,
   updateProductSchm,
   getOneProductSchm,
-  getProductsSchm,
+  getProductsSchm
 }

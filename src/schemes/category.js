@@ -2,16 +2,16 @@ const Joi = require('joi')
 
 const addCategorySchm = Joi.object({
   name: Joi.string().required(),
-  description: Joi.string(),
+  description: Joi.string()
 })
 
 const updateCategorySchm = Joi.object({
   name: Joi.string(),
-  description: Joi.string(),
+  description: Joi.string()
 })
 
 const getOneCategorySchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const getCategoriesSchm = Joi.object({
@@ -26,12 +26,12 @@ const getCategoriesSchm = Joi.object({
         .required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
   addCategorySchm,
   updateCategorySchm,
   getOneCategorySchm,
-  getCategoriesSchm,
+  getCategoriesSchm
 }

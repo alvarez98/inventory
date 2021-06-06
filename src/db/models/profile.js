@@ -2,13 +2,19 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Profile = sequelize.define('Profile', {
-    user_id: DataTypes.STRING,
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true
+    },
+    user_id: DataTypes.UUID,
     gender: DataTypes.ENUM('FEMALE', 'MALE'),
     dni: DataTypes.STRING,
     phone: DataTypes.BIGINT,
     birthday: DataTypes.DATE,
     address: DataTypes.STRING,
-    isActive: DataTypes.BOOLEAN,
+    isActive: DataTypes.BOOLEAN
   })
   Profile.associate = (models) => {
     Profile.belongsTo(models.User, {
