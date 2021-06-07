@@ -6,13 +6,13 @@ const {
   getSales,
   getOneSale,
   updateSale,
-  deleteSale
+  deleteSale,
 } = require('../controllers/sale')
 const {
   addSaleSchm,
   getOneSaleSchm,
   getSalesSchm,
-  updateSaleSchm
+  updateSaleSchm,
 } = require('../schemes/sale')
 const validate = require('../middlewares/validate')
 const validateItemNotExist = require('../middlewares/validateItemNotExist')
@@ -27,8 +27,18 @@ router.post(
   validateItemNotExist(models.SALE, 'email', 'body'),
   addSale
 )
-router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getSalesSchm, 'query'), getSales)
-router.get('/:id', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getOneSaleSchm, 'params'), getOneSale)
+router.get(
+  '/',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getSalesSchm, 'query'),
+  getSales
+)
+router.get(
+  '/:id',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getOneSaleSchm, 'params'),
+  getOneSale
+)
 router.delete(
   '/:id',
   guard(ROLES.ADMIN),

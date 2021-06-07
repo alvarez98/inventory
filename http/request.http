@@ -1,14 +1,14 @@
 @port = 5000
 @baseURL = http://127.0.0.1:{{port}}/api
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjI5NDc3MjgsImlkIjoiMGZlYmZlZjMtYjE5OS00MWUzLTk3NjgtNDNlNDM2M2YwNWFhIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJC9sM1RXamRFcWpjWkdvbHFLZy5UMS5IbXZhby81Y3VVQ2I3bjN3VGRBZHR1Qy5yLzBld0lDIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwiaWF0IjoxNjIyOTQ2ODI4fQ.ZHDHJJ2msK9ptm-bLJVm3ekWyX7q7oHPlsOFHjqlZu8
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjMwOTE4MzIsImlkIjoiZTcyMThmM2EtZWY2MS00NzQzLWJiYTYtYzBkZWI5ODhjZDM4IiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHlJMmZqcUxGUGc3cy5TN2w1Mjl0N09Hby9mSG9JZkVpUHNaMnhGRmVHdDh3OUZ4clcvSHAyIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wN1QxNjozNzoxMC4zNzBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wN1QxNjozNzoxMC4zNzBaIiwiaWF0IjoxNjIzMDg4MjMyfQ.l16aHb3ETcFAvItEfPF2BT8Xf3_oV20VQfvJuLsT1ME
 
 ##################################### USERS #####################################
 ### GET /users
-GET {{baseURL}}/users
+GET {{baseURL}}/users/sdfAASCSDVC
 Authorization: Bearer {{access_token}}
 
 ### POST /users
-POST {{baseURL}}/users
+POST {{baseURL}}/users/
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
@@ -33,7 +33,7 @@ POST {{baseURL}}/auth/signin
 Content-Type: application/json
 
 {
-    "email": "adolfo@gmail.com",
+    "email": "adolfogmail.com",
     "password": "12345678"
 }
 
@@ -104,14 +104,15 @@ DELETE {{baseURL}}/expenses/1c70e39b-7cc2-4ca5-b49f-e6c176afd462
 
 ##################################### buy-orders #####################################
 ### GET /buy-orders
-GET {{baseURL}}/buy-orders
+GET {{baseURL}}/buy-orders/614ffae4-0184-492c-9512-276d62863d2b
+Authorization: Bearer {{access_token}}
 
 ### POST /buy-orders
 POST {{baseURL}}/buy-orders
+Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "providerId": "608e7b24-0d9b-4cef-8520-60c8a18155f0",
     "date": "2021/03/01",
     "status": "DUE"
 }
@@ -125,7 +126,8 @@ Content-Type: application/json
 }
 
 ### DELETE /buy-orders/:id
-DELETE {{baseURL}}/buy-orders/80b3cd44-6a4b-49e4-951e-152815ee7d45
+DELETE {{baseURL}}/buy-orders/399709e2-d790-4e99-a912-8edc4eaa5e3f
+Authorization: Bearer {{access_token}}
 
 ##################################### buys #####################################
 ### GET /buys
@@ -314,4 +316,5 @@ Content-Type: application/json
 }
 
 ### DELETE /sale-orders/:id
-DELETE {{baseURL}}/sale-orders/15dcdc5e-501f-4407-b39b-19a79e3f06e2
+DELETE {{baseURL}}/sale-orders/399709e2-d790-4e99-a912-8edc4eaa5e3f
+Authorization: Bearer {{access_token}}

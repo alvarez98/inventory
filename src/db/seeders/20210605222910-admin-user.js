@@ -6,7 +6,7 @@ const { encrypt } = require('../../utils/bcrypt')
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const encryptedPass = await encrypt('admin_34632')
-    
+
     return queryInterface.bulkInsert(
       'Users',
       [
@@ -19,8 +19,8 @@ module.exports = {
           role: 'ADMIN',
           isActive: true,
           createdAt: new Date(),
-          updatedAt: new Date(),
-        },
+          updatedAt: new Date()
+        }
       ],
       {}
     )
@@ -28,5 +28,5 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete('Users', null, {})
-  },
+  }
 }

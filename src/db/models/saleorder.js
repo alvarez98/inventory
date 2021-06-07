@@ -7,12 +7,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true
     },
-    date: DataTypes.DATE,
     totalSale: DataTypes.FLOAT,
+    sellerId: DataTypes.UUID,
     status: DataTypes.ENUM('CANCELED', 'PAID', 'DUE'),
     isActive: DataTypes.BOOLEAN
   })
   SaleOrder.associate = (models) => {
+    SaleOrder.belongsTo(models.User, {
+      as: 'seller',
+      foreignKey: 'sellerId'
+    })
   }
 
   SaleOrder.prototype.toJSON = function () {

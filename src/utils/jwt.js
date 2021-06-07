@@ -17,7 +17,7 @@ const generateToken = (
   jwt.sign(
     {
       exp: Math.floor(Date.now() / 1000 + time * 60),
-      ...data,
+      ...data
     },
     Configuration.get(Keys.JWT_SECRET)
   )
@@ -35,10 +35,9 @@ const verifyToken = (token) => {
   } catch (error) {
     throw new HttpError(401, 'La sesión no es válida', {
       field: ['headers', 'Authorization'],
-      value: token,
+      value: token
     })
   }
-  
 }
 
 module.exports = {

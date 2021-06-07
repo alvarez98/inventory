@@ -1,6 +1,6 @@
 @port = 5000
 @baseURL = http://127.0.0.1:{{port}}/api
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjI5NTMzOTEsImlkIjoiMGZlYmZlZjMtYjE5OS00MWUzLTk3NjgtNDNlNDM2M2YwNWFhIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJC9sM1RXamRFcWpjWkdvbHFLZy5UMS5IbXZhby81Y3VVQ2I3bjN3VGRBZHR1Qy5yLzBld0lDIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wNlQwMjoyMDoyNC40NzZaIiwiaWF0IjoxNjIyOTQ5NzkxfQ.j0tSw9h9JSI_1RcuSTseuht-dqoJI7_n3wLF4nW6BzA
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjMwMzA1NjYsImlkIjoiNGY2MWE4YTItODE1Ny00ZGI1LTg1ODAtYTZjNDJmMjUxZGUyIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJFhveUxOSy9wbHBUaDBxcGoxdTJhWU9ldEV0ZHVNcWhRL282QWVXck50WmpBYTJYMzFDaDhLIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wNlQxNzo1MzowOC44NzdaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wNlQxNzo1MzowOC44NzdaIiwiaWF0IjoxNjIzMDI2OTY2fQ.o4qnjZFTEAkB4P3yEOdbWrw2IKGWcVXd2mbVGvHoxIQ
 
 ### GET /providers
 GET {{baseURL}}/providers
@@ -47,13 +47,13 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "name": "Cafe",
-    "providerId": "ef7fdd7e-013f-49f0-94d7-466ca983bada",
-    "categoryId": "7976acf0-b52d-4791-817f-321889fe5391",
-    "price": "90",
+    "name": "Atun",
+    "providerId": "f9cd3675-80fd-4ce0-ad60-bc30b56311a6",
+    "categoryId": "4db99568-f392-495c-904c-1dd8a628cc93",
+    "price": "14",
     "code": "5476509864",
-    "description": "Cafe negro",
-    "cost": "60",
+    "description": "Atun en agua",
+    "cost": "10",
     "min": "10",
     "max": "20",
     "status": "ACTIVE",
@@ -61,6 +61,7 @@ Content-Type: application/json
 }
 ### GET /buy-orders
 GET {{baseURL}}/buy-orders
+Authorization: Bearer {{access_token}}
 
 ### POST /buy-orders
 POST {{baseURL}}/buy-orders
@@ -68,7 +69,6 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-    "providerId": "ef7fdd7e-013f-49f0-94d7-466ca983bada",
     "date": "2021/03/01",
     "status": "DUE"
 }
@@ -78,14 +78,14 @@ GET {{baseURL}}/buys
 Authorization: Bearer {{access_token}}
 
 ### POST /buys
-POST {{baseURL}}/buy-orders/3c99292f-24c8-458b-bf9b-08520cff0282/buys
+POST {{baseURL}}/buy-orders/399709e2-d790-4e99-a912-8edc4eaa5e3f/buys
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
     "items": [{
-        "productId": "3c1b99ba-a7ab-42fd-aa1c-5fd32f7b5ffd",
-        "quantity": 10
+        "productId": "7ec70c64-a8de-42e8-8a8c-93bb648f0972",
+        "quantity": 20
     }]
 }
 
@@ -97,7 +97,7 @@ Authorization: Bearer {{access_token}}
 GET {{baseURL}}/sales
 
 ### POST /sales
-POST {{baseURL}}/sale-orders/77f9c8f3-ba9f-4566-82f3-2020564d33e8/sales
+POST {{baseURL}}/sale-orders/913ad2a9-89d1-4fc2-b09d-d47151f72e06/sales
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 

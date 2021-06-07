@@ -5,7 +5,7 @@ const {
   getBuys,
   getOneBuy,
   updateBuy,
-  deleteBuy,
+  deleteBuy
 } = require('../controllers/buy')
 const { getOneBuySchm, getBuysSchm, updateBuySchm } = require('../schemes/buy')
 const validate = require('../middlewares/validate')

@@ -22,8 +22,9 @@ const { guard, ROLES } = require('../middlewares/guard')
 
 router.post(
   '/',
-  guard(ROLES.ADMIN, ROLES.CASHIER), 
+  guard(ROLES.ADMIN, ROLES.CASHIER),
   validate(addCategorySchm, 'body'),
+  validateItemNotExist(models.CATEGORY, 'body', 'name', 'El nombre de la categoría ya ha sido registrado'),
   addCategory
 )
 router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getCategoriesSchm, 'query'), getCategories)
@@ -39,7 +40,7 @@ router.put(
   '/:id',
   guard(ROLES.ADMIN),
   validate(getOneCategorySchm, 'params'),
-  validateItemExist(models.CATEGORY, 'id', 'params', 'No se encontró la categoría'),
+  validateItemExist(models.CATEGORY, 'params', 'id', 'No se encontró la categoría'),
   validate(updateCategorySchm, 'body'),
   validateItemNotExist(models.CATEGORY, 'body', 'name', 'El nombre de la categoría ya ha sido registrado'),
   updateCategory

@@ -1,13 +1,11 @@
 const Joi = require('joi')
 
 const addBuyOrderSchm = Joi.object({
-  providerId: Joi.string().uuid().required(),
   date: Joi.date().required(),
-  status: Joi.string().valid('CANCELED', 'PAID', 'DUE').required()
+  status: Joi.string().valid('PAID', 'DUE').required()
 })
 
 const updateBuyOrderSchm = Joi.object({
-  providerId: Joi.string().uuid(),
   date: Joi.date(),
   status: Joi.string().valid('CANCELED', 'PAID', 'DUE')
 })

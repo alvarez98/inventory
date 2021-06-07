@@ -4,23 +4,21 @@ const addSaleSchm = Joi.object({
   items: Joi.array().items(
     Joi.object({
       productId: Joi.string().uuid().required(),
-      quantity: Joi.number().integer().strict().required(),
+      quantity: Joi.number().integer().strict().required()
     })
-  ),
+  )
 })
 
 const updateSaleSchm = Joi.object({
-  saleOrderId: Joi.string().uuid(),
-  productId: Joi.string().uuid(),
-  quantity: Joi.number().integer(),
+  quantity: Joi.number().integer()
 })
 
 const getOneSaleSchm = Joi.object({
-  id: Joi.string().uuid().required(),
+  id: Joi.string().uuid().required()
 })
 
 const addSaleParamSchm = Joi.object({
-  saleOrderId: Joi.string().uuid().required(),
+  saleOrderId: Joi.string().uuid().required()
 })
 
 const getSalesSchm = Joi.object({
@@ -43,7 +41,7 @@ const getSalesSchm = Joi.object({
       Joi.string().valid('quantity', 'total').required(),
       Joi.string().valid('ASC', 'DESC').required()
     )
-    .length(2),
+    .length(2)
 })
 
 module.exports = {
@@ -51,5 +49,5 @@ module.exports = {
   addSaleParamSchm,
   updateSaleSchm,
   getOneSaleSchm,
-  getSalesSchm,
+  getSalesSchm
 }

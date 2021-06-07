@@ -6,13 +6,13 @@ const {
   getBuyOrders,
   getOneBuyOrder,
   updateBuyOrder,
-  deleteBuyOrder,
+  deleteBuyOrder
 } = require('../controllers/buy-order')
 const {
   addBuyOrderSchm,
   getOneBuyOrderSchm,
   getBuyOrdersSchm,
-  updateBuyOrderSchm,
+  updateBuyOrderSchm
 } = require('../schemes/buy-order')
 const { addBuy } = require('../controllers/buy')
 const { addBuySchm, addBuyParamSchm } = require('../schemes/buy')
@@ -25,13 +25,6 @@ router.post(
   '/',
   guard(ROLES.ADMIN),
   validate(addBuyOrderSchm, 'body'),
-  validateItemExist(
-    models.PROVIDER,
-    'body',
-    'providerId',
-    'No se encontró el proveedor',
-    'id'
-  ),
   addBuyOrder
 )
 router.post(

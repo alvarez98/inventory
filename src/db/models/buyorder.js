@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     date: DataTypes.DATE,
     totalBuy: DataTypes.FLOAT,
-    providerId: DataTypes.UUID,
+    buyerId: DataTypes.UUID,
     status: DataTypes.ENUM('CANCELED', 'PAID', 'DUE'),
     isActive: DataTypes.BOOLEAN
   })
 
   BuyOrder.associate = (models) => {
-    BuyOrder.belongsTo(models.Provider, {
-      as: 'provider',
-      foreignKey: 'providerId'
+    BuyOrder.belongsTo(models.User, {
+      as: 'buyer',
+      foreignKey: 'buyerId'
     })
   }
   BuyOrder.prototype.toJSON = function () {

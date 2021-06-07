@@ -5,6 +5,7 @@ const find = require('../db/controllers/find')
 const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const models = require('../db/keys')
+const Models = require('../db/models/index')
 
 /**
  * @function addSaleOrder
@@ -13,9 +14,10 @@ const models = require('../db/keys')
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addSaleOrder = async ({ body }, res, next) => {
+const addSaleOrder = async ({ body, headers }, res, next) => {
   try {
     body.totalSale = 0
+    body.sellerId = headers.decoded.id
     const saleOrder = await add(models.SALEORDER, body)
     res.status(201).json({ id: saleOrder.id, message: 'Created' })
   } catch (error) {
@@ -40,7 +42,13 @@ const getSaleOrders = async ({ query }, res, next) => {
       buildSaleOrderFilters(filters),
       order,
       limit,
-      offset
+      offset,
+      [
+        {
+          model: Models[models.USER],
+          as: 'seller'
+        }
+      ]
     )
     res.status(200).json({
       data: saleOrders.rows,
@@ -63,7 +71,16 @@ const getSaleOrders = async ({ query }, res, next) => {
 
 const getOneSaleOrder = async ({ params }, res, next) => {
   try {
-    const saleOrder = await findOne(models.SALEORDER, { ...params, isActive: true })
+    const saleOrder = await findOne(
+      models.SALEORDER,
+      { ...params, isActive: true },
+      [
+        {
+          model: Models[models.USER],
+          as: 'seller'
+        }
+      ]
+    )
     if (!saleOrder) throw new HttpError(404, 'SaleOrder not found')
     res.status(200).json({ data: saleOrder, message: 'Success' })
   } catch (error) {

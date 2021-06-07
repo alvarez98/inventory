@@ -1,5 +1,5 @@
 {
-  "name": "express-postgres-template",
+  "name": "inventory",
   "version": "1.0.0",
   "description": "One Paragraph of project description goes here. This is a template for organization repositories, set your own stuff.",
   "main": "./src/server.js",
@@ -12,7 +12,6 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-joi-validation": "^5.0.0",
     "helmet": "^4.4.1",
     "jest": "^26.6.3",
     "joi": "^17.4.0",

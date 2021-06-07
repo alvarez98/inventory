@@ -8,17 +8,19 @@ const { Configuration, Keys } = require('../config')
 const auth = async ({ body }, res, next) => {
   try {
     const { email, password } = body
-    let user = await findOneWithScope(models.USER, { email, isActive: true }, 'withPassword')
+    const user = await findOneWithScope(models.USER, { email, isActive: true }, 'withPassword')
     const match = await compare(password, user.dataValues.password)
-    if (!match) throw new HttpError(401, 'Contraseña incorrecta', {
-      field: ['body', 'password'],
-      value: body.password
-    })
-    const access_token = generateToken(user.dataValues, Configuration.get(Keys.JWT_EXP_ACCESS_TKN))
-    const refresh_token = generateToken(user.dataValues, Configuration.get(Keys.JWT_EXP_REFRESH_TKN))
+    if (!match) {
+      throw new HttpError(401, 'Contraseña incorrecta', {
+        field: ['body', 'password'],
+        value: body.password
+      })
+    }
+    const accessToken = generateToken(user.dataValues, Configuration.get(Keys.JWT_EXP_ACCESS_TKN))
+    const refresToken = generateToken(user.dataValues, Configuration.get(Keys.JWT_EXP_REFRESH_TKN))
     res.status(200).send({
-      access_token,
-      refresh_token,
+      access_token: accessToken,
+      refresh_token: refresToken
     })
   } catch (error) {
     next(error)
@@ -26,5 +28,5 @@ const auth = async ({ body }, res, next) => {
 }
 
 module.exports = {
-  auth,
+  auth
 }

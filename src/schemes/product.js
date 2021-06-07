@@ -57,8 +57,7 @@ const getProductsSchm = Joi.object({
           'categoryId',
           'price',
           'cost',
-          'status',
-          'expiration'
+          'status'
         )
         .required(),
       Joi.string().valid('ASC', 'DESC').required()

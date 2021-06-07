@@ -6,13 +6,13 @@ const {
   getExpenses,
   getOneExpense,
   updateExpense,
-  deleteExpense
+  deleteExpense,
 } = require('../controllers/expense')
 const {
   addExpenseSchm,
   getOneExpenseSchm,
   getExpensesSchm,
-  updateExpenseSchm
+  updateExpenseSchm,
 } = require('../schemes/expense')
 const validate = require('../middlewares/validate')
 const validateItemExist = require('../middlewares/validateItemExist')
@@ -25,8 +25,18 @@ router.post(
   validate(addExpenseSchm, 'body'),
   addExpense
 )
-router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getExpensesSchm, 'query'), getExpenses)
-router.get('/:id', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getOneExpenseSchm, 'params'), getOneExpense)
+router.get(
+  '/',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getExpensesSchm, 'query'),
+  getExpenses
+)
+router.get(
+  '/:id',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getOneExpenseSchm, 'params'),
+  getOneExpense
+)
 router.delete(
   '/:id',
   guard(ROLES.ADMIN),

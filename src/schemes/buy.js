@@ -10,9 +10,7 @@ const addBuySchm = Joi.object({
 })
 
 const updateBuySchm = Joi.object({
-  productId: Joi.string().uuid(),
-  quantity: Joi.number().integer(),
-  buyOrderId: Joi.string().uuid()
+  quantity: Joi.number().integer()
 })
 
 const addBuyParamSchm = Joi.object({

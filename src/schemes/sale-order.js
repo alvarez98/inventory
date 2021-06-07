@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 const addSaleOrderSchm = Joi.object({
   date: Joi.date().required(),
-  status: Joi.string().valid('CANCELED', 'PAID', 'DUE').required()
+  status: Joi.string().valid('PAID', 'DUE').required()
 })
 
 const updateSaleOrderSchm = Joi.object({

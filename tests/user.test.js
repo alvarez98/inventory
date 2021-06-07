@@ -67,26 +67,6 @@ describe('GET /users/:_id', () => {
   })
 })
 
-describe('GET /users', () => {
-  test('It should get Users', async (done) => {
-    const response = await request(app).get('/api/users?offset=0&limit=20')
-    expect(response.statusCode).toBe(200)
-    done()
-  })
-  test("It shouldn't get Users for invalid offset", async (done) => {
-    const response = await request(app).get('/api/users?offset=')
-    expect(response.statusCode).toBe(400)
-    done()
-  })
-  test("It shouldn't get Users for invalid query", async (done) => {
-    const response = await request(app).get(
-      '/api/users?offset=0&limit=20&invalidQuery=error'
-    )
-    expect(response.statusCode).toBe(400)
-    done()
-  })
-})
-
 describe('PUT /users/:_id', () => {
   test('You must update a user', async (done) => {
     const response = await request(app).put(`/api/users/${userId}`).send({

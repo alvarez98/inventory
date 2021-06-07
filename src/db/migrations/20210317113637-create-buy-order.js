@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false
       },
-      providerId: {
+      buyerId: {
         type: Sequelize.UUID,
         allowNull: false
       },

@@ -6,6 +6,7 @@ const findOne = require('../db/controllers/findOne')
 const updateOne = require('../db/controllers/updateOne')
 const Models = require('../db/models/index')
 const models = require('../db/keys')
+const db = require('../db/models/index')
 
 /**
  * @function addBuyOrder
@@ -14,9 +15,10 @@ const models = require('../db/keys')
  * @param {Object} res - Express response object
  * @param {Function} next - Express middleware function
  */
-const addBuyOrder = async ({ body }, res, next) => {
+const addBuyOrder = async ({ body, headers }, res, next) => {
   try {
-    body.totalBuy = 0.0
+    body.totalBuy = 0
+    body.buyerId = headers.decoded.id
     const buyOrder = await add(models.BUYORDER, body)
     res.status(201).json({ id: buyOrder.id, message: 'Created' })
   } catch (error) {
@@ -44,8 +46,8 @@ const getBuyOrders = async ({ query }, res, next) => {
       offset,
       [
         {
-          model: Models[models.PROVIDER],
-          as: 'provider'
+          model: Models[models.USER],
+          as: 'buyer'
         }
       ]
     )
@@ -75,8 +77,8 @@ const getOneBuyOrder = async ({ params }, res, next) => {
       { ...params, isActive: true },
       [
         {
-          model: Models[models.PROVIDER],
-          as: 'provider'
+          model: Models[models.USER],
+          as: 'buyer'
         }
       ]
     )
@@ -113,10 +115,17 @@ const updateBuyOrder = async ({ params, body }, res, next) => {
  */
 
 const deleteBuyOrder = async ({ params }, res, next) => {
+  const t = await db.sequelize.transaction()
   try {
-    await updateOne(models.BUYORDER, params.id, { isActive: false })
+    await updateOne(models.BUYORDER, params.id, { isActive: false }, { transaction: t })
+    // const buys = await find(models.BUY, { buyOrderId: params.id }, 'id', null, 0, [], { transaction: t })
+    // for (let { dataValues: buy } of buys.rows) {
+
+    // }
+    await t.commit()
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }

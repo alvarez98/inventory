@@ -67,16 +67,25 @@ router.delete(
   '/:id',
   guard(ROLES.ADMIN),
   validate(getOneSaleOrderSchm, 'params'),
-  validateItemExist(models.SALEORDER, 'id', 'params'),
+  validateItemExist(
+    models.SALEORDER,
+    'params',
+    'id',
+    'No se encontró la orden de venta'
+  ),
   deleteSaleOrder
 )
 router.put(
   '/:id',
   guard(ROLES.ADMIN),
   validate(getOneSaleOrderSchm, 'params'),
-  validateItemExist(models.SALEORDER, 'id', 'params'),
+  validateItemExist(
+    models.SALEORDER,
+    'params',
+    'id',
+    'No se encontró la orden de venta'
+  ),
   validate(updateSaleOrderSchm, 'body'),
-  validateItemNotExist(models.SALEORDER, 'email', 'body'),
   updateSaleOrder
 )
 

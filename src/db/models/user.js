@@ -8,22 +8,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
       },
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       firstname: DataTypes.STRING,
       lastname: DataTypes.STRING,
       role: DataTypes.ENUM('ADMIN', 'CASHIER'),
-      isActive: DataTypes.BOOLEAN,
+      isActive: DataTypes.BOOLEAN
     },
     {
       defaultScope: {
-        attributes: { exclude: ['password'] },
+        attributes: { exclude: ['password'] }
       },
       scopes: {
         withPassword: {
-          attributes: { include: ['password'] },
+          attributes: { include: ['password'] }
         }
       }
     }

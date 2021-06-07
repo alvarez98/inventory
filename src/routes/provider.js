@@ -6,13 +6,13 @@ const {
   getProviders,
   getOneProvider,
   updateProvider,
-  deleteProvider
+  deleteProvider,
 } = require('../controllers/provider')
 const {
   addProviderSchm,
   getOneProviderSchm,
   getProvidersSchm,
-  updateProviderSchm
+  updateProviderSchm,
 } = require('../schemes/provider')
 const validate = require('../middlewares/validate')
 const validateItemNotExist = require('../middlewares/validateItemNotExist')
@@ -27,8 +27,18 @@ router.post(
   validateItemNotExist(models.PROVIDER, 'body', 'email'),
   addProvider
 )
-router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getProvidersSchm, 'query'), getProviders)
-router.get('/:id', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getOneProviderSchm, 'params'), getOneProvider)
+router.get(
+  '/',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getProvidersSchm, 'query'),
+  getProviders
+)
+router.get(
+  '/:id',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getOneProviderSchm, 'params'),
+  getOneProvider
+)
 router.delete(
   '/:id',
   guard(ROLES.ADMIN),

@@ -6,13 +6,13 @@ const {
   getUsers,
   getOneUser,
   updateUser,
-  deleteUser
+  deleteUser,
 } = require('../controllers/user')
 const {
   addUserSchm,
   getOneUserSchm,
   getUsersSchm,
-  updateUserSchm
+  updateUserSchm,
 } = require('../schemes/user')
 const validate = require('../middlewares/validate')
 const validateItemNotExist = require('../middlewares/validateItemNotExist')
@@ -24,11 +24,26 @@ router.post(
   '/',
   guard(ROLES.ADMIN),
   validate(addUserSchm, 'body'),
-  validateItemNotExist(models.USER, 'body', 'email', 'El email ya ha sido registrado con otra cuenta'),
+  validateItemNotExist(
+    models.USER,
+    'body',
+    'email',
+    'El email ya ha sido registrado con otra cuenta'
+  ),
   addUser
 )
-router.get('/', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getUsersSchm, 'query'), getUsers)
-router.get('/:id', guard(ROLES.ADMIN, ROLES.CASHIER), validate(getOneUserSchm, 'params'), getOneUser)
+router.get(
+  '/',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getUsersSchm, 'query'),
+  getUsers
+)
+router.get(
+  '/:id',
+  guard(ROLES.ADMIN, ROLES.CASHIER),
+  validate(getOneUserSchm, 'params'),
+  getOneUser
+)
 router.delete(
   '/:id',
   guard(ROLES.ADMIN),
@@ -42,7 +57,12 @@ router.put(
   validate(getOneUserSchm, 'params'),
   validateItemExist(models.USER, 'params', 'id', 'No se encontró el usuario'),
   validate(updateUserSchm, 'body'),
-  validateItemNotExist(models.USER, 'body', 'email', 'El email ya ha sido usado'),
+  validateItemNotExist(
+    models.USER,
+    'body',
+    'email',
+    'El email ya ha sido usado'
+  ),
   updateUser
 )
 

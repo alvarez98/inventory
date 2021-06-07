@@ -8,12 +8,12 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true
       },
-      date: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
       totalSale: {
         type: Sequelize.FLOAT,
+        allowNull: false
+      },
+      sellerId: {
+        type: Sequelize.UUID,
         allowNull: false
       },
       status: {

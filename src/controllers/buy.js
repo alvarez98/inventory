@@ -48,10 +48,11 @@ const addBuy = async ({ body, params }, res, next) => {
       )
       inventory.quantity += buy.quantity
       await inventory.save({ transaction: t })
-      if (inventory.quantity >= product.max)
+      if (inventory.quantity >= product.max) {
         warnings.push(
           `Se alcanzó el máximo establecido para el producto: ${product.name}`
         )
+      }
     }
     await buyOrder.save({ transaction: t })
     await bulkAdd(models.BUY, body.items, { transaction: t })
@@ -86,19 +87,19 @@ const getBuys = async ({ query }, res, next) => {
       [
         {
           model: Models[models.PRODUCT],
-          as: 'product',
+          as: 'product'
         },
         {
           model: Models[models.BUYORDER],
-          as: 'buy_order',
-        },
+          as: 'buy_order'
+        }
       ]
     )
     res.status(200).json({
       data: buys.rows,
       count: buys.count,
       current: buys.rows.length,
-      offset,
+      offset
     })
   } catch (error) {
     next(error)
@@ -118,12 +119,12 @@ const getOneBuy = async ({ params }, res, next) => {
     const buy = await findOne(models.BUY, { ...params, isActive: true }, [
       {
         model: Models[models.PRODUCT],
-        as: 'product',
+        as: 'product'
       },
       {
         model: Models[models.BUYORDER],
-        as: 'buy_order',
-      },
+        as: 'buy_order'
+      }
     ])
     if (!buy) throw new HttpError(404, 'Buy not found')
     res.status(200).json({ data: buy, message: 'Success' })
@@ -182,5 +183,5 @@ module.exports = {
   getBuys,
   getOneBuy,
   updateBuy,
-  deleteBuy,
+  deleteBuy
 }
