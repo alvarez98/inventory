@@ -1,10 +1,5 @@
 const Joi = require('joi')
 
-const updateInventorySchm = Joi.object({
-  productId: Joi.string().uuid(),
-  quantity: Joi.number().integer()
-})
-
 const getOneInventorySchm = Joi.object({
   id: Joi.string().uuid().required()
 })
@@ -27,7 +22,6 @@ const getInventoriesSchm = Joi.object({
 })
 
 module.exports = {
-  updateInventorySchm,
   getOneInventorySchm,
   getInventoriesSchm
 }

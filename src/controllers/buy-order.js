@@ -47,15 +47,15 @@ const getBuyOrders = async ({ query }, res, next) => {
       [
         {
           model: Models[models.USER],
-          as: 'buyer'
-        }
+          as: 'buyer',
+        },
       ]
     )
     res.status(200).json({
       data: buyOrder.rows,
       count: buyOrder.count,
       current: buyOrder.rows.length,
-      offset
+      offset,
     })
   } catch (error) {
     next(error)
@@ -78,8 +78,8 @@ const getOneBuyOrder = async ({ params }, res, next) => {
       [
         {
           model: Models[models.USER],
-          as: 'buyer'
-        }
+          as: 'buyer',
+        },
       ]
     )
     if (!buyOrder) throw new HttpError(404, 'BuyOrder not found')
@@ -117,11 +117,36 @@ const updateBuyOrder = async ({ params, body }, res, next) => {
 const deleteBuyOrder = async ({ params }, res, next) => {
   const t = await db.sequelize.transaction()
   try {
-    await updateOne(models.BUYORDER, params.id, { isActive: false }, { transaction: t })
-    // const buys = await find(models.BUY, { buyOrderId: params.id }, 'id', null, 0, [], { transaction: t })
-    // for (let { dataValues: buy } of buys.rows) {
-
-    // }
+    await updateOne(
+      models.BUYORDER,
+      params.id,
+      { isActive: false },
+      { transaction: t }
+    )
+    const buys = await find(
+      models.BUY,
+      { buyOrderId: params.id },
+      'id',
+      null,
+      0,
+      [],
+      { transaction: t }
+    )
+    for (let { dataValues: buy } of buys.rows) {
+      const { dataValues: inventory } = await findOne(
+        models.INVENTORY,
+        {
+          productId: buy.productId,
+          isActive: true,
+        },
+        [],
+        { transaction: t }
+      )
+      buy.isActive = false
+      inventory.quantity -= buy.quantity
+      await buy.save({ transaction: t })
+      await inventory.save({ transaction: t })
+    }
     await t.commit()
     res.status(200).json({ id: params.id, message: 'Deleted' })
   } catch (error) {
@@ -135,5 +160,5 @@ module.exports = {
   getBuyOrders,
   getOneBuyOrder,
   updateBuyOrder,
-  deleteBuyOrder
+  deleteBuyOrder,
 }

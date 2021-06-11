@@ -35,11 +35,9 @@ const getOneProviderSchm = Joi.object({
 
 const getProvidersSchm = Joi.object({
   name: Joi.string(),
-  address: Joi.string(),
   country: Joi.string(),
   city: Joi.string(),
   state: Joi.string(),
-  email: Joi.string().email(),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),
   order: Joi.array()

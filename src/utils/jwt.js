@@ -10,17 +10,10 @@ const { Configuration, Keys } = require('../config')
  * @return {String} token
  */
 
-const generateToken = (
-  data,
-  time = Configuration.get(Keys.JWT_EXP_ACCESS_TKN)
-) =>
-  jwt.sign(
-    {
-      exp: Math.floor(Date.now() / 1000 + time * 60),
-      ...data
-    },
-    Configuration.get(Keys.JWT_SECRET)
-  )
+const generateToken = (data, time = null) => {
+  if (time) data.exp = Math.floor(Date.now() / 1000 + time * 60)
+  return jwt.sign(data, Configuration.get(Keys.JWT_SECRET))
+}
 
 /**
  * @function verifyToken
@@ -33,14 +26,15 @@ const verifyToken = (token) => {
   try {
     return jwt.verify(token, Configuration.get(Keys.JWT_SECRET))
   } catch (error) {
+    console.log(error)
     throw new HttpError(401, 'La sesión no es válida', {
       field: ['headers', 'Authorization'],
-      value: token
+      value: token,
     })
   }
 }
 
 module.exports = {
   generateToken,
-  verifyToken
+  verifyToken,
 }

@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true
     },
+    productId: DataTypes.UUID,
     quantity: DataTypes.INTEGER,
     isActive: DataTypes.BOOLEAN
   })

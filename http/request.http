@@ -28,6 +28,14 @@ Content-Type: application/json
     "password": "admin_34632"
 }
 
+### POST /auth/refresh
+POST {{baseURL}}/auth/refresh
+Content-Type: application/json
+
+{
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjMyMDU1MzQsImlkIjoiNTdlOWFlYmUtODcwNy00NTFhLTg4OGQtYzExN2VhMGJmM2ZmIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJDJjVC9RZ3J1SllOVFpCOS9hdTNCdWVOem95ZnpEYnQ4N3ZmNEM3VDloN2Yyd3UvVFdDSzcuIiwiZmlyc3RuYW1lIjoiQWRtaW4iLCJsYXN0bmFtZSI6IlVzZXIiLCJyb2xlIjoiQURNSU4iLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0wOVQwMToyNDozMS41MDdaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0wOVQwMToyNDozMS41MDdaIiwiaWF0IjoxNjIzMjAxOTM0fQ.dtQB4DyauBUnCevAUdsHDzK2Qu-g-XI38rYycaIFLgU"
+}
+
 ### POST /auth/signin
 POST {{baseURL}}/auth/signin
 Content-Type: application/json
@@ -88,7 +96,7 @@ Content-Type: application/json
     "name": "Compra de lo que sea",
     "description": "vasrvsd",
     "date": "2021/03/01",
-    "total": "243425"
+    "total": 2434.25
 }
 
 ### PUT /expenses/:id

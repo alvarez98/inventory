@@ -8,7 +8,7 @@ const Models = require('../db/models')
 const models = require('../db/keys')
 
 /**
- * @function addUser
+ * @function addProfile
  * @description Controller for POST /api/profiles
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object

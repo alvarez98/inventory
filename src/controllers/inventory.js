@@ -72,43 +72,7 @@ const getOneInventory = async ({ params }, res, next) => {
   }
 }
 
-/**
- * @function updateInventory
- * @description Controller for PUT /api/inventories/:id
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
- */
-
-const updateInventory = async ({ params, body }, res, next) => {
-  try {
-    await updateOne(models.INVENTORY, params.id, body)
-    res.status(200).json({ id: params.id, message: 'Updated' })
-  } catch (error) {
-    next(error)
-  }
-}
-
-/**
- * @function deleteInventory
- * @description Controller for DELETE /api/inventories/:id
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
- */
-
-const deleteInventory = async ({ params }, res, next) => {
-  try {
-    await updateOne(models.INVENTORY, params.id, { isActive: false })
-    res.status(200).json({ id: params.id, message: 'Deleted' })
-  } catch (error) {
-    next(error)
-  }
-}
-
 module.exports = {
   getInventories,
-  getOneInventory,
-  updateInventory,
-  deleteInventory
+  getOneInventory
 }

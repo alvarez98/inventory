@@ -6,10 +6,10 @@ const addProductSchm = Joi.object({
   categoryId: Joi.string().uuid().required(),
   code: Joi.number().integer().required(),
   description: Joi.string(),
-  cost: Joi.number().required(),
-  min: Joi.number().integer().less(Joi.ref('max')).required(),
-  max: Joi.number().integer().required(),
-  price: Joi.number().greater(Joi.ref('cost')).required(),
+  cost: Joi.number().strict().required(),
+  min: Joi.number().integer().strict().less(Joi.ref('max')).required(),
+  max: Joi.number().integer().strict().required(),
+  price: Joi.number().strict().greater(Joi.ref('cost')).required(),
   status: Joi.string().valid('DISCONTINUED', 'ACTIVE').required(),
   image: Joi.string().uri().required()
 })
@@ -20,8 +20,10 @@ const updateProductSchm = Joi.object({
   categoryId: Joi.string().uuid(),
   code: Joi.number().integer(),
   description: Joi.string(),
-  cost: Joi.number(),
-  price: Joi.number().greater(Joi.ref('cost')),
+  cost: Joi.number().strict(),
+  min: Joi.number().integer().strict().less(Joi.ref('max')),
+  max: Joi.number().integer().strict(),
+  price: Joi.number().strict().greater(Joi.ref('cost')),
   status: Joi.string().valid('DISCONTINUED', 'ACTIVE'),
   image: Joi.string().uri()
 })
@@ -45,7 +47,7 @@ const getProductsSchm = Joi.object({
       Joi.string().valid('equal', 'less', 'greater').required()
     )
     .length(2),
-  status: Joi.string().valid(),
+  status: Joi.string().valid('DISCONTINUED', 'ACTIVE'),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),
   order: Joi.array()

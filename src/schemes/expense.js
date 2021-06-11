@@ -29,7 +29,7 @@ const getExpensesSchm = Joi.object({
     .length(2),
   total: Joi.array()
     .items(
-      Joi.number().required(),
+      Joi.number().strict().required(),
       Joi.string().valid('equal', 'less', 'greater').required()
     )
     .length(2),

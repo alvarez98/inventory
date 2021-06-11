@@ -2,7 +2,7 @@ const HttpError = require('../classes/httpError')
 const findOneWithScope = require('../db/controllers/findOneWithScope')
 const models = require('../db/keys')
 const { compare } = require('../utils/bcrypt')
-const { generateToken } = require('../utils/jwt')
+const { generateToken, verifyToken } = require('../utils/jwt')
 const { Configuration, Keys } = require('../config')
 
 const auth = async ({ body }, res, next) => {
@@ -27,6 +27,21 @@ const auth = async ({ body }, res, next) => {
   }
 }
 
+const refresh = async ({ body }, res, next) => {
+  try {
+    const data = await verifyToken(body.refresh_token)
+    delete data.iat 
+    delete data.exp
+    const accessToken = generateToken(data, Configuration.get(Keys.JWT_EXP_ACCESS_TKN))
+    res.status(200).send({
+      access_token: accessToken
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
-  auth
+  auth,
+  refresh
 }

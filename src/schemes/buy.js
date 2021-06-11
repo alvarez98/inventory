@@ -10,7 +10,7 @@ const addBuySchm = Joi.object({
 })
 
 const updateBuySchm = Joi.object({
-  quantity: Joi.number().integer()
+  quantity: Joi.number().integer().strict().required()
 })
 
 const addBuyParamSchm = Joi.object({

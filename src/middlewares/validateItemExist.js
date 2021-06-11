@@ -30,7 +30,6 @@ const validateItemExist =
             }
           // Unique value
           } else {
-            console.log('ok')
             const isExist = await findOne(model, {
               [key]: valueToValidate,
               isActive: true

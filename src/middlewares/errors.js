@@ -11,7 +11,7 @@ const handleErrors = (err, req, res, next) => {
   const { code, name = 'Error', ...body } = err instanceof HttpError
     ? err
     : { code: 500, message: 'Internal server error' }
-  console.log(`${name}: ${err.message}`)
+  // console.log(`${name}: ${err.message}`)
   res.status(code).send(body)
 }
 

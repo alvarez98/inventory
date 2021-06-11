@@ -27,7 +27,7 @@ const getBuyOrdersSchm = Joi.object({
       Joi.string().valid('equal', 'less', 'greater').required()
     )
     .length(2),
-  status: Joi.string().valid(),
+  status: Joi.string().valid('CANCELED', 'PAID', 'DUE'),
   limit: Joi.number().integer(),
   offset: Joi.number().integer(),
   order: Joi.array()
